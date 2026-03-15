@@ -10,7 +10,7 @@
 
 ### Medium
 1. **interaction 타입 증가 시 app.js 복잡도 상승 가능성**
-   - 검증 레일과 네비게이션은 추가됐지만 interaction 분기는 계속 늘어날 수 있음.
+   - 검증 레일과 탐색 개선은 추가됐지만 interaction 분기는 계속 늘어날 수 있음.
    - 영향: 유지보수성 저하 가능성
    - 상태: 미해결
 
@@ -20,8 +20,8 @@
    - 상태: 허용
 
 ### Low
-1. **이전/다음 네비게이션 정보 밀도는 아직 얕음**
-   - 현재는 day 번호 중심으로 탐색함.
+1. **네비게이션 preview 정보는 충분하지만 아직 매우 압축적임**
+   - 현재는 제목과 subtitle까지만 보여줌.
    - 영향: 사용성은 좋아졌지만 더 풍부하게 개선 가능
    - 상태: 허용
 
@@ -41,6 +41,7 @@
 - calm mode 존재
 - 키보드 포커스 스타일 유지
 - 링크형 카드, 텍스트 링크, day navigation 링크에 focus-visible 적용됨
+- navigation preview도 텍스트 기반이라 접근 가능성 양호
 - 오류 상태에서도 메인 복귀 링크 제공
 
 ## Release risk review
@@ -50,4 +51,4 @@
 
 ## Recommendation
 현재 구조는 공개 가능한 MVP로 충분하다.
-다음 큰 업데이트에서는 interaction 모듈화와 navigation 정보 강화(제목/설명 preview)를 우선 추가할 것.
+다음 큰 업데이트에서는 interaction 모듈화와 CI 오류 메시지 개선을 우선 추가할 것.

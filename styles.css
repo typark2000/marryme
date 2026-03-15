@@ -232,6 +232,12 @@ input:focus-visible,
   color: var(--muted);
 }
 
+.day-nav-copy {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
 .day-nav-link.is-disabled {
   opacity: 0.5;
 }

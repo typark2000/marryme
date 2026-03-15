@@ -11,7 +11,8 @@
 5. 아래 아카이브 섹션에서 이전 디자인 카드를 본다.
 6. 원하는 카드를 눌러 `day/?slug=<slug>` 상세 페이지로 이동한다.
 7. 상세 페이지 상단의 이전/다음 day 네비게이션으로 연속 탐색한다.
-8. 필요하면 메인으로 돌아가거나 related days로 더 둘러본다.
+8. 네비 카드에서 다음 day의 제목과 짧은 설명을 미리 보고 이동한다.
+9. 필요하면 메인으로 돌아가거나 related days로 더 둘러본다.
 
 ## Screens / states
 ### A. Home / Today state
@@ -26,6 +27,7 @@
 - 선택한 day를 단일 상세 템플릿에서 렌더링
 - 상단에 back link 제공
 - 상단에 이전/다음 day 네비게이션 제공
+- 이전/다음 카드에 day 번호 + 제목 + 짧은 설명 제공
 - 하단에 다른 day 탐색 카드 제공
 
 ### D. Interaction state
@@ -49,7 +51,7 @@
 - Hint / status text
 - Archive grid
 - Detail header
-- Previous / next day navigation
+- Previous / next day navigation with preview copy
 - Related days grid
 - About section
 

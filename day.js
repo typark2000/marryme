@@ -21,6 +21,26 @@ function createRelatedCard(day) {
   `;
 }
 
+function createDayNavCard(day, directionLabel, directionArrow) {
+  return `
+    <a class="day-nav-link" href="../day/?slug=${day.slug}">
+      <span class="day-nav-label">${directionArrow} ${directionLabel}</span>
+      <strong>Day ${day.dayNumber} · ${day.proposalTitle}</strong>
+      <p class="day-nav-copy">${day.subtitle}</p>
+    </a>
+  `;
+}
+
+function createDisabledDayNav(directionLabel, directionArrow) {
+  return `
+    <span class="day-nav-link is-disabled">
+      <span class="day-nav-label">${directionArrow} ${directionLabel}</span>
+      <strong>없음</strong>
+      <p class="day-nav-copy">더 이동할 day가 아직 없어.</p>
+    </span>
+  `;
+}
+
 function createDayNav(day) {
   const index = days.findIndex((item) => item.slug === day.slug);
   const previousDay = index >= 0 && index < days.length - 1 ? days[index + 1] : null;
@@ -29,17 +49,11 @@ function createDayNav(day) {
   return `
     <nav class="day-nav" aria-label="day navigation">
       ${previousDay
-        ? `<a class="day-nav-link" href="../day/?slug=${previousDay.slug}">
-            <span class="day-nav-label">← 이전 day</span>
-            <strong>Day ${previousDay.dayNumber}</strong>
-          </a>`
-        : '<span class="day-nav-link is-disabled"><span class="day-nav-label">← 이전 day</span><strong>없음</strong></span>'}
+        ? createDayNavCard(previousDay, '이전 day', '←')
+        : createDisabledDayNav('이전 day', '←')}
       ${nextDay
-        ? `<a class="day-nav-link" href="../day/?slug=${nextDay.slug}">
-            <span class="day-nav-label">다음 day →</span>
-            <strong>Day ${nextDay.dayNumber}</strong>
-          </a>`
-        : '<span class="day-nav-link is-disabled"><span class="day-nav-label">다음 day →</span><strong>없음</strong></span>'}
+        ? createDayNavCard(nextDay, '다음 day', '→')
+        : createDisabledDayNav('다음 day', '→')}
     </nav>
   `;
 }
