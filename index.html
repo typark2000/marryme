@@ -12,34 +12,19 @@
   </head>
   <body>
     <main class="app-shell">
-      <section class="hero card">
-        <p class="eyebrow">DAY 001</p>
-        <h1>오늘의 청혼 페이지</h1>
-        <p class="lead">
-          매일 새롭고, 매일 조금 더 집요한 방식으로 청혼하는 웹 디자인 실험실.
-          오늘의 거절 버튼은... 잡히지 않습니다.
-        </p>
+      <section class="hero card" id="todayCard">
+        <div id="todayContent"></div>
+      </section>
 
-        <div class="proposal-stage" id="proposalStage">
-          <div class="ring" aria-hidden="true">💍</div>
-          <h2>나랑 결혼해줄래?</h2>
-          <p>버튼을 눌러봐. 아주 공정한 선택지를 준비했어.</p>
-
-          <div class="mode-toggle">
-            <label class="toggle-label" for="calmModeToggle">
-              <input type="checkbox" id="calmModeToggle" />
-              차분한 모드 (움직임 줄이기)
-            </label>
-            <p class="toggle-help">모션이 불편하면 켜면 돼. 그러면 버튼이 도망가지 않아.</p>
+      <section class="archive card">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">ARCHIVE</p>
+            <h3>지난 청혼 디자인</h3>
           </div>
-
-          <div class="actions" id="actionsArea">
-            <button class="yes-button" id="yesButton">좋아 💖</button>
-            <button class="no-button" id="noButton" type="button" aria-label="거절 버튼">싫어 🙈</button>
-          </div>
-
-          <p class="hint" id="hint" aria-live="polite">힌트: 거절은 생각보다 어렵다.</p>
+          <p class="section-copy">매일 하나씩 쌓이는 청혼 실험들을 둘러볼 수 있어.</p>
         </div>
+        <div class="archive-grid" id="archiveGrid"></div>
       </section>
 
       <section class="about card">
@@ -52,7 +37,7 @@
         <ul>
           <li>매일 다른 테마와 인터랙션</li>
           <li>거절 버튼을 누르기 어렵게 만드는 장난기</li>
-          <li>나중에는 날짜별 디자인 아카이브 제공 예정</li>
+          <li>이제 날짜별 아카이브로 이전 디자인도 다시 볼 수 있음</li>
         </ul>
       </section>
     </main>
@@ -63,6 +48,7 @@
       </div>
     </noscript>
 
+    <script src="data.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
