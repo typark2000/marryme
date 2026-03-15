@@ -7,7 +7,7 @@ function createArchiveCard(day, index) {
   const badge = index === 0 ? 'TODAY' : `DAY ${day.dayNumber}`;
 
   return `
-    <a class="archive-item" href="days/${day.slug}/">
+    <a class="archive-item" href="day/?slug=${day.slug}">
       <p class="archive-badge">${badge}</p>
       <h4>${day.proposalTitle}</h4>
       <p>${day.subtitle}</p>

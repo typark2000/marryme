@@ -1,7 +1,7 @@
 # REVIEW.md — marryme review
 
 ## Review summary
-검토 범위: 정적 프론트엔드 구조, 날짜별 permalink, 접근성, 공개 저장소 노출 위험
+검토 범위: 정적 프론트엔드 구조, permalink 자동화, 접근성, 공개 저장소 노출 위험
 
 ## Risk-ranked issues
 
@@ -9,9 +9,9 @@
 없음.
 
 ### Medium
-1. **새 day 추가 시 상세 페이지 파일 생성이 수동임**
-   - 현재는 `data.js`에 추가하고 `days/<slug>/index.html`도 함께 만들어야 함.
-   - 영향: 반복 작업 발생 가능
+1. **slug 파라미터 검증이 느슨함**
+   - 현재는 slug가 없거나 틀리면 not found로 처리한다.
+   - 영향: 치명적이진 않지만 데이터 검증 자동화가 있으면 더 안정적임.
    - 상태: 미해결
 
 2. **interaction 타입 증가 시 app.js 복잡도 상승 가능성**
@@ -20,9 +20,9 @@
    - 상태: 미해결
 
 ### Low
-1. **상세 페이지 탐색성 추가 개선 여지**
-   - 현재는 메인 복귀와 related days만 있음.
-   - 영향: 충분히 usable하지만 더 좋아질 수 있음.
+1. **query parameter 기반 URL은 예쁘진 않음**
+   - 현재는 자동화와 단순성을 우선했다.
+   - 영향: 공유성은 충분하지만 미학적으로는 약간 아쉬움.
    - 상태: 허용
 
 ## Security review
@@ -40,12 +40,12 @@
 - calm mode 존재
 - 키보드 포커스 스타일 유지
 - 링크형 아카이브 카드와 텍스트 링크에 focus-visible 적용됨
-- not found 상태에도 복귀 링크 제공
+- 잘못된 slug에서도 복귀 링크 제공
 
 ## Release risk review
 - 현재 릴리스 리스크는 낮음
-- 남은 핵심 리스크는 상세 페이지 생성의 수동성 및 interaction 구조 확장성
+- 남은 핵심 리스크는 slug 검증 자동화와 interaction 구조 확장성
 
 ## Recommendation
 현재 구조는 공개 가능한 MVP로 충분하다.
-다음 큰 업데이트에서는 상세 페이지 생성을 더 자동화하거나 템플릿화할 것.
+다음 큰 업데이트에서는 metadata validation과 previous/next navigation을 우선 추가할 것.
