@@ -10,7 +10,7 @@ window.MARRYME_DAYS = [
     proposalBody: '',
     yesLabel: '좋아 💖',
     noLabel: '잠깐만 🙈',
-    successTitle: '좋아, 이건 운명 판정이야 💍',
+    successTitle: '고마워 💍',
     successBody: '앞으로 잘해줄게. 받아줘서 고마워.',
     successHint: '',
     interaction: {
