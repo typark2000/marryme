@@ -18,16 +18,13 @@ const requiredStringFields = [
   'subtitle',
   'intro',
   'proposalTitle',
-  'proposalBody',
   'yesLabel',
   'noLabel',
-  'hintDefault',
-  'rejectMessage',
   'successTitle',
-  'successBody',
-  'successHint'
+  'successBody'
 ];
 
+const optionalStringFields = ['proposalBody', 'successHint'];
 const errors = [];
 
 if (!Array.isArray(days) || days.length === 0) {
@@ -49,6 +46,12 @@ const seenDayNumbers = new Set();
   requiredStringFields.forEach((field) => {
     if (typeof day[field] !== 'string' || !day[field].trim()) {
       errors.push(`${prefix}: ${field} must be a non-empty string.`);
+    }
+  });
+
+  optionalStringFields.forEach((field) => {
+    if (field in day && typeof day[field] !== 'string') {
+      errors.push(`${prefix}: ${field} must be a string when provided.`);
     }
   });
 
@@ -90,8 +93,8 @@ const seenDayNumbers = new Set();
       );
     }
 
-    if (!Array.isArray(day.interaction.messages) || day.interaction.messages.length === 0) {
-      errors.push(`${prefix}: interaction.messages must be a non-empty array.`);
+    if (!Array.isArray(day.interaction.messages)) {
+      errors.push(`${prefix}: interaction.messages must be an array.`);
     }
   }
 });

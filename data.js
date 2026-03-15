@@ -7,23 +7,15 @@ window.MARRYME_DAYS = [
     subtitle: '이번엔 거절 버튼이 점점 작아진다.',
     intro: '내 마음을 받아줘 제발~~',
     proposalTitle: '나랑 결혼해줄래?',
-    proposalBody: '좋아 버튼만 잘 보이면 충분하지?',
+    proposalBody: '',
     yesLabel: '좋아 💖',
     noLabel: '잠깐만 🙈',
-    hintDefault: '힌트: 망설일수록 거절 버튼이 더 작아진다.',
-    rejectMessage: '버튼이 작아질수록 마음은 더 급해지고 있어 🙈',
     successTitle: '좋아, 이건 운명 판정이야 💍',
     successBody: '결정을 내렸네. 오늘의 청혼 페이지는 아주 만족스러워하고 있어.',
-    successHint: '내일은 또 다른 디자인으로 마음을 흔들어볼게.',
+    successHint: '',
     interaction: {
       type: 'shrinking-no',
-      messages: [
-        '어? 거절 버튼이 살짝 자신감을 잃었어.',
-        '망설임이 길수록 버튼이 작아진다…',
-        '오늘의 컨셉: 거절의 존재감 축소.',
-        '버튼이 점점 "굳이?" 하는 표정이야.',
-        '이제는 거의 마음속 소리 수준이야.'
-      ]
+      messages: []
     },
     tags: ['playful', 'mischief', 'day-002']
   },
@@ -36,23 +28,15 @@ window.MARRYME_DAYS = [
     intro:
       '매일 새롭고, 매일 조금 더 집요한 방식으로 청혼하는 웹 디자인 실험실. 오늘의 거절 버튼은... 잡히지 않습니다.',
     proposalTitle: '나랑 결혼해줄래?',
-    proposalBody: '버튼을 눌러봐. 아주 공정한 선택지를 준비했어.',
+    proposalBody: '',
     yesLabel: '좋아 💖',
     noLabel: '싫어 🙈',
-    hintDefault: '힌트: 거절은 생각보다 어렵다.',
-    rejectMessage: '오늘도 거절 버튼은 필사적으로 살아남는 중이야 😌',
     successTitle: '역시 그럴 줄 알았어 💍',
     successBody: '축하합니다. 오늘의 청혼 페이지를 통과했어요.',
-    successHint: '내일은 또 다른 방식으로 설득하러 올게.',
+    successHint: '',
     interaction: {
       type: 'runaway-no',
-      messages: [
-        '거절 버튼이 긴장해서 도망가는 중…',
-        '진짜 그 버튼을 누를 생각이었어?',
-        '오늘의 디자인 컨셉: 거절 불가.',
-        '버튼이 스스로 생존 본능을 발휘했어.',
-        '좋아 버튼은 가만히 있는데 말이지 😌'
-      ]
+      messages: []
     },
     tags: ['classic', 'runaway-button', 'day-001']
   }

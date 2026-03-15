@@ -51,6 +51,7 @@ function findDayBySlug(slug) {
 
 function createProposalMarkup(day) {
   const interactionClass = `is-${day.interaction?.type || 'default'}`;
+  const proposalBody = day.proposalBody ? `<p>${day.proposalBody}</p>` : '';
 
   return `
     <p class="eyebrow">DAY ${day.dayNumber}</p>
@@ -60,14 +61,12 @@ function createProposalMarkup(day) {
     <div class="proposal-stage ${interactionClass}" id="proposalStage">
       <div class="ring" aria-hidden="true">💍</div>
       <h2>${day.proposalTitle}</h2>
-      <p>${day.proposalBody}</p>
+      ${proposalBody}
 
       <div class="actions" id="actionsArea">
         <button class="yes-button" id="yesButton" type="button">${day.yesLabel}</button>
         <button class="no-button" id="noButton" type="button" aria-label="거절 버튼">${day.noLabel}</button>
       </div>
-
-      <p class="hint" id="hint" aria-live="polite">${day.hintDefault}</p>
     </div>
   `;
 }
@@ -76,14 +75,8 @@ function setupDayInteraction(day, root) {
   const noButton = root.querySelector('#noButton');
   const yesButton = root.querySelector('#yesButton');
   const proposalStage = root.querySelector('#proposalStage');
-  const hint = root.querySelector('#hint');
 
   let shrinkStep = 0;
-
-  function randomMessage() {
-    const list = day.interaction.messages || [day.hintDefault];
-    return list[Math.floor(Math.random() * list.length)];
-  }
 
   function moveRunawayButton(event) {
     if (event) event.preventDefault();
@@ -97,7 +90,6 @@ function setupDayInteraction(day, root) {
 
     noButton.style.left = `${Math.max(16, Math.random() * maxX)}px`;
     noButton.style.top = `${Math.max(140, Math.random() * maxY)}px`;
-    hint.textContent = randomMessage();
   }
 
   function shrinkNoButton(event) {
@@ -106,7 +98,6 @@ function setupDayInteraction(day, root) {
     shrinkStep += 1;
     const scale = Math.max(0.12, 1 - shrinkStep * 0.12);
     noButton.style.transform = `scale(${scale})`;
-    hint.textContent = randomMessage();
   }
 
   function activateNoInteraction(event) {
@@ -126,18 +117,15 @@ function setupDayInteraction(day, root) {
 
   noButton.addEventListener('click', (event) => {
     activateNoInteraction(event);
-
-    if (day.rejectMessage) {
-      hint.textContent = day.rejectMessage;
-    }
   });
 
   yesButton.addEventListener('click', () => {
+    const successHint = day.successHint ? `<p class="hint">${day.successHint}</p>` : '';
     proposalStage.innerHTML = `
       <div class="ring" aria-hidden="true">🎉</div>
       <h2>${day.successTitle}</h2>
       <p>${day.successBody}</p>
-      <p class="hint">${day.successHint}</p>
+      ${successHint}
     `;
   });
 }
