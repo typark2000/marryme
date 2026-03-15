@@ -85,11 +85,15 @@ function setupDayInteraction(day, root) {
 
     const stageRect = proposalStage.getBoundingClientRect();
     const buttonRect = noButton.getBoundingClientRect();
-    const maxX = Math.max(16, stageRect.width - buttonRect.width - 16);
-    const maxY = Math.max(16, stageRect.height - buttonRect.height - 16);
+    const minX = 16;
+    const minY = 140;
+    const maxX = Math.max(minX, stageRect.width - buttonRect.width - 16);
+    const maxY = Math.max(minY, stageRect.height - buttonRect.height - 16);
+    const nextX = minX + Math.random() * Math.max(0, maxX - minX);
+    const nextY = minY + Math.random() * Math.max(0, maxY - minY);
 
-    noButton.style.left = `${Math.max(16, Math.random() * maxX)}px`;
-    noButton.style.top = `${Math.max(140, Math.random() * maxY)}px`;
+    noButton.style.left = `${nextX}px`;
+    noButton.style.top = `${nextY}px`;
   }
 
   function shrinkNoButton(event) {
