@@ -1,0 +1,154 @@
+:root {
+  --bg-1: #fff1f2;
+  --bg-2: #ffe4e6;
+  --card: rgba(255, 255, 255, 0.8);
+  --text: #3f1d2e;
+  --accent: #ff4d8d;
+  --accent-2: #ff7aa8;
+  --shadow: 0 20px 60px rgba(255, 77, 141, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text);
+  background: radial-gradient(circle at top, var(--bg-1), var(--bg-2));
+}
+
+.app-shell {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 48px 0 64px;
+  display: grid;
+  gap: 24px;
+}
+
+.card {
+  background: var(--card);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+}
+
+.hero {
+  padding: 40px;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin: 0 0 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+}
+
+.lead {
+  width: min(640px, 100%);
+  margin: 16px auto 0;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.proposal-stage {
+  position: relative;
+  margin-top: 32px;
+  padding: 32px 24px 64px;
+  min-height: 320px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.72));
+  overflow: hidden;
+}
+
+.ring {
+  font-size: 3rem;
+}
+
+h2 {
+  margin: 16px 0 8px;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+}
+
+.actions {
+  position: relative;
+  margin-top: 32px;
+  min-height: 120px;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 700;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+.yes-button {
+  padding: 16px 28px;
+  border-radius: 999px;
+  color: white;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 16px 30px rgba(255, 77, 141, 0.24);
+}
+
+.no-button {
+  position: absolute;
+  left: calc(50% + 24px);
+  top: 0;
+  padding: 14px 22px;
+  border-radius: 999px;
+  color: var(--text);
+  background: #fff;
+  box-shadow: 0 12px 24px rgba(99, 51, 74, 0.12);
+}
+
+.hint {
+  margin-top: 32px;
+  opacity: 0.8;
+}
+
+.about {
+  padding: 28px;
+}
+
+.about h3 {
+  margin-top: 0;
+}
+
+.about ul {
+  margin-bottom: 0;
+  line-height: 1.8;
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding: 28px 20px;
+  }
+
+  .proposal-stage {
+    min-height: 360px;
+  }
+
+  .no-button {
+    left: 55%;
+  }
+}
