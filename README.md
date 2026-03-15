@@ -3,7 +3,7 @@
 매일 하나씩 새로운 청혼 페이지 디자인이 업로드되는 웹앱.
 
 ## 현재 상태
-- Day 001 ~ Day 032 디자인 데이터 등록 완료
+- Day 001 ~ Day 049 디자인 데이터 등록 완료
 - 메인에서 오늘의 디자인 + 아카이브 목록 표시
 - 단일 상세 템플릿 `day/?slug=<slug>` 지원
 - 상세 페이지 이전/다음 네비게이션 지원
@@ -13,7 +13,8 @@
 ## Current day concepts
 - Day 001~015: first collection implemented
 - Day 016~032: wave 1 implemented
-- Latest day detail: <https://typark2000.github.io/marryme/day/?slug=day-032>
+- Day 033~049: wave 2 implemented
+- Latest day detail: <https://typark2000.github.io/marryme/day/?slug=day-049>
 
 ## Validate
 ```bash
