@@ -6,19 +6,23 @@
 - 매일 다른 청혼 웹 디자인 공개
 - 사용자가 직접 인터랙션을 체험 가능
 - 장난스럽게 `거절 버튼을 누르기 어렵게 만드는` 연출이 핵심
-- 날짜별 아카이브와 다양한 콘셉트 디자인으로 확장 가능
+- 날짜별 아카이브와 상세 페이지로 확장 가능
 
 ## 현재 상태
 - data-driven 구조로 재편 완료
 - Day 001 / Day 002 디자인 데이터 등록 완료
 - 메인에서 오늘의 디자인 + 아카이브 목록 표시
+- `/days/day-001/`, `/days/day-002/` 상세 페이지 지원
 - GitHub Pages 자동 배포 연결 완료
 - 멀티롤 문서(`SPEC.md`, `UX.md`, `TASKS.md`, `REVIEW.md`) 정리 완료
 
 ## 프로젝트 구조
 - `index.html` — 메인 엔트리
 - `data.js` — 날짜별 디자인 데이터
-- `script.js` — 오늘의 디자인 렌더링 및 인터랙션 제어
+- `app.js` — 공통 렌더링/인터랙션 로직
+- `script.js` — 메인 페이지 렌더링
+- `day.js` — 개별 상세 페이지 렌더링
+- `days/<slug>/index.html` — 개별 day permalink 페이지
 - `styles.css` — 공통 스타일
 - `SPEC.md`, `UX.md`, `TASKS.md`, `REVIEW.md` — 기획/리뷰 문서
 - `NOTION_UPDATE_TEMPLATE.md` — 큰 업데이트 기록용 템플릿
@@ -46,13 +50,16 @@ python3 -m http.server 8000
 ## Demo
 - GitHub repo: <https://github.com/typark2000/marryme>
 - Live demo: <https://typark2000.github.io/marryme/>
+- Day 001: <https://typark2000.github.io/marryme/days/day-001/>
+- Day 002: <https://typark2000.github.io/marryme/days/day-002/>
 
 ## 새 디자인 추가 방법
 1. 새 날짜/새 콘셉트 기획 정리
 2. `SPEC.md` / `UX.md` / `TASKS.md` 영향 범위 확인
 3. `data.js`에 새 day 객체 추가
-4. 필요한 인터랙션이 있으면 `script.js`에 타입 추가
-5. 로컬 확인
-6. public push 전 비밀정보/디버그 로그 점검
-7. 큰 업데이트인 경우에만 Notion `Project Updates`에 기록
-8. push 후 Pages 배포 확인
+4. `days/<slug>/index.html` 상세 페이지 추가
+5. 필요한 인터랙션이 있으면 `app.js`에 타입 추가
+6. 로컬 확인
+7. public push 전 비밀정보/디버그 로그 점검
+8. 큰 업데이트인 경우에만 Notion `Project Updates`에 기록
+9. push 후 Pages 배포 확인
