@@ -1,7 +1,52 @@
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const allowedInteractionTypes = new Set(['runaway-no', 'shrinking-no']);
+
+function getDays() {
+  return window.MARRYME_DAYS || [];
+}
+
+function validateDays(days) {
+  const errors = [];
+  const seenSlugs = new Set();
+
+  if (!Array.isArray(days) || !days.length) {
+    errors.push('No day data found.');
+    return { valid: false, errors };
+  }
+
+  days.forEach((day, index) => {
+    const prefix = `Day index ${index}`;
+
+    if (!day || typeof day !== 'object') {
+      errors.push(`${prefix}: invalid object.`);
+      return;
+    }
+
+    if (!day.slug || typeof day.slug !== 'string') {
+      errors.push(`${prefix}: missing slug.`);
+    } else if (seenSlugs.has(day.slug)) {
+      errors.push(`${prefix}: duplicate slug '${day.slug}'.`);
+    } else {
+      seenSlugs.add(day.slug);
+    }
+
+    if (!day.dayNumber || typeof day.dayNumber !== 'string') {
+      errors.push(`${prefix}: missing dayNumber.`);
+    }
+
+    if (!day.interaction || !allowedInteractionTypes.has(day.interaction.type)) {
+      errors.push(`${prefix}: invalid interaction type '${day?.interaction?.type}'.`);
+    }
+  });
+
+  return {
+    valid: errors.length === 0,
+    errors
+  };
+}
 
 function findDayBySlug(slug) {
-  const days = window.MARRYME_DAYS || [];
+  const days = getDays();
   return days.find((day) => day.slug === slug);
 }
 
@@ -136,6 +181,9 @@ function renderProposalExperience(root, day) {
 }
 
 window.MarryMeApp = {
+  allowedInteractionTypes,
+  getDays,
+  validateDays,
   findDayBySlug,
   renderProposalExperience
 };

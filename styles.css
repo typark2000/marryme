@@ -74,6 +74,17 @@ h1 {
   line-height: 1.7;
 }
 
+.error-list {
+  width: min(720px, 100%);
+  margin: 20px auto 0;
+  padding: 16px 20px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text);
+  line-height: 1.7;
+  text-align: left;
+}
+
 .lead {
   width: min(680px, 100%);
   margin: 16px auto 0;

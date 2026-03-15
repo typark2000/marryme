@@ -1,4 +1,5 @@
-const days = window.MARRYME_DAYS || [];
+const days = window.MarryMeApp.getDays();
+const validation = window.MarryMeApp.validateDays(days);
 const todayContent = document.getElementById('todayContent');
 const archiveGrid = document.getElementById('archiveGrid');
 
@@ -20,14 +21,19 @@ function createArchiveCard(day, index) {
   `;
 }
 
+function renderValidationError(errors) {
+  todayContent.innerHTML = `
+    <p class="eyebrow">DATA ERROR</p>
+    <h1>day 데이터에 문제가 있어</h1>
+    <p class="lead">data.js를 확인해줘. 검증에서 실패한 상태야.</p>
+    <ul class="error-list">${errors.map((error) => `<li>${error}</li>`).join('')}</ul>
+  `;
+  archiveGrid.innerHTML = '<p class="empty-copy">데이터 오류 때문에 아카이브를 렌더링하지 않았어.</p>';
+}
+
 function render() {
-  if (!days.length) {
-    todayContent.innerHTML = `
-      <p class="eyebrow">COMING SOON</p>
-      <h1>곧 다음 청혼 페이지가 올라와요</h1>
-      <p class="lead">아직 등록된 디자인이 없지만, 곧 첫 번째 실험이 시작될 예정이야.</p>
-    `;
-    archiveGrid.innerHTML = '<p class="empty-copy">아카이브가 아직 비어 있어.</p>';
+  if (!validation.valid) {
+    renderValidationError(validation.errors);
     return;
   }
 

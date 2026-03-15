@@ -18,12 +18,12 @@
 ### P0
 1. interaction type을 더 모듈화해 새 디자인 추가 비용 줄이기
 2. detail 페이지에 이전/다음 day 네비게이션 추가
-3. slug 누락/중복 검증 규칙 추가
+3. GitHub Actions에서 검증 실패 내용을 더 읽기 쉽게 정리하기
 
 ### P1
-4. day 메타데이터 검증 규칙 추가
-5. 썸네일/OG 메타데이터 강화
-6. README에 새 day 추가 체크리스트 더 구체화
+4. 썸네일/OG 메타데이터 강화
+5. README에 새 day 추가 체크리스트 더 구체화
+6. data entry helper 또는 generator 스크립트 검토
 
 ### P2
 7. 필터링(귀여움/집요함/인터랙션 타입) 추가

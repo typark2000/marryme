@@ -1,0 +1,7 @@
+{
+  "name": "marryme",
+  "private": true,
+  "scripts": {
+    "validate:days": "node validate-days.js"
+  }
+}
