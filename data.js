@@ -1,5 +1,144 @@
 window.MARRYME_DAYS = [
   {
+    id: 'day-015',
+    dayNumber: '015',
+    slug: 'day-015',
+    title: '오늘의 청혼 페이지',
+    subtitle: '지금까지의 장난이 한 번에 몰려오는 피날레.',
+    intro: '내 마음을 받아줘 제발~~',
+    proposalTitle: '나랑 결혼해줄래?',
+    proposalBody: '',
+    yesLabel: '좋아 💖',
+    noLabel: '잠깐만 🙈',
+    successTitle: '고마워 💍',
+    successBody: '앞으로 잘해줄게. 받아줘서 고마워.',
+    successHint: '',
+    interaction: { type: 'finale-mix' },
+    tags: ['finale', 'mix', 'day-015']
+  },
+  {
+    id: 'day-014',
+    dayNumber: '014',
+    slug: 'day-014',
+    title: '오늘의 청혼 페이지',
+    subtitle: '좋아 쪽 카드만 유독 더 메인처럼 보인다.',
+    intro: '내 마음을 받아줘 제발~~',
+    proposalTitle: '나랑 결혼해줄래?',
+    proposalBody: '',
+    yesLabel: '좋아 💖',
+    noLabel: '잠깐만 🙈',
+    successTitle: '고마워 💍',
+    successBody: '앞으로 잘해줄게. 받아줘서 고마워.',
+    successHint: '',
+    interaction: { type: 'card-deck-choice' },
+    tags: ['cards', 'deck', 'day-014']
+  },
+  {
+    id: 'day-013',
+    dayNumber: '013',
+    slug: 'day-013',
+    title: '오늘의 청혼 페이지',
+    subtitle: '거절 버튼이 장식 사이에 숨어든다.',
+    intro: '내 마음을 받아줘 제발~~',
+    proposalTitle: '나랑 결혼해줄래?',
+    proposalBody: '',
+    yesLabel: '좋아 💖',
+    noLabel: '잠깐만 🙈',
+    successTitle: '고마워 💍',
+    successBody: '앞으로 잘해줄게. 받아줘서 고마워.',
+    successHint: '',
+    interaction: { type: 'decorative-hide' },
+    tags: ['decor', 'hide', 'day-013']
+  },
+  {
+    id: 'day-012',
+    dayNumber: '012',
+    slug: 'day-012',
+    title: '오늘의 청혼 페이지',
+    subtitle: '문장이 천천히 완성된다.',
+    intro: '내 마음을 받아줘 제발~~',
+    proposalTitle: '나랑 결혼해줄래?',
+    proposalBody: '',
+    yesLabel: '좋아 💖',
+    noLabel: '잠깐만 🙈',
+    successTitle: '고마워 💍',
+    successBody: '앞으로 잘해줄게. 받아줘서 고마워.',
+    successHint: '',
+    interaction: {
+      type: 'sentence-build',
+      options: ['앞으로', '잘해줄게.', '받아줘서', '고마워.']
+    },
+    tags: ['sentence', 'promise', 'day-012']
+  },
+  {
+    id: 'day-011',
+    dayNumber: '011',
+    slug: 'day-011',
+    title: '오늘의 청혼 페이지',
+    subtitle: '거절 버튼이 점점 희미해진다.',
+    intro: '내 마음을 받아줘 제발~~',
+    proposalTitle: '나랑 결혼해줄래?',
+    proposalBody: '',
+    yesLabel: '좋아 💖',
+    noLabel: '잠깐만 🙈',
+    successTitle: '고마워 💍',
+    successBody: '앞으로 잘해줄게. 받아줘서 고마워.',
+    successHint: '',
+    interaction: { type: 'fading-no' },
+    tags: ['fade', 'minimal', 'day-011']
+  },
+  {
+    id: 'day-010',
+    dayNumber: '010',
+    slug: 'day-010',
+    title: '오늘의 청혼 페이지',
+    subtitle: '좋아 버튼이 하나씩 늘어난다.',
+    intro: '내 마음을 받아줘 제발~~',
+    proposalTitle: '나랑 결혼해줄래?',
+    proposalBody: '',
+    yesLabel: '좋아 💖',
+    noLabel: '잠깐만 🙈',
+    successTitle: '고마워 💍',
+    successBody: '앞으로 잘해줄게. 받아줘서 고마워.',
+    successHint: '',
+    interaction: { type: 'multiplying-yes' },
+    tags: ['cta', 'duplicate', 'day-010']
+  },
+  {
+    id: 'day-009',
+    dayNumber: '009',
+    slug: 'day-009',
+    title: '오늘의 청혼 페이지',
+    subtitle: '화면이 yes 쪽으로 점점 압축된다.',
+    intro: '내 마음을 받아줘 제발~~',
+    proposalTitle: '나랑 결혼해줄래?',
+    proposalBody: '',
+    yesLabel: '좋아 💖',
+    noLabel: '잠깐만 🙈',
+    successTitle: '고마워 💍',
+    successBody: '앞으로 잘해줄게. 받아줘서 고마워.',
+    successHint: '',
+    interaction: { type: 'layout-compress' },
+    tags: ['layout', 'compress', 'day-009']
+  },
+  {
+    id: 'day-008',
+    dayNumber: '008',
+    slug: 'day-008',
+    title: '오늘의 청혼 페이지',
+    subtitle: '버튼이 가까워질 때 슬쩍 자리를 바꾼다.',
+    intro: '내 마음을 받아줘 제발~~',
+    proposalTitle: '나랑 결혼해줄래?',
+    proposalBody: '',
+    yesLabel: '좋아 💖',
+    noLabel: '잠깐만 🙈',
+    successTitle: '고마워 💍',
+    successBody: '앞으로 잘해줄게. 받아줘서 고마워.',
+    successHint: '',
+    interaction: { type: 'button-swap' },
+    tags: ['swap', 'buttons', 'day-008']
+  },
+  {
     id: 'day-007',
     dayNumber: '007',
     slug: 'day-007',
@@ -33,9 +172,7 @@ window.MARRYME_DAYS = [
     successTitle: '고마워 💍',
     successBody: '앞으로 잘해줄게. 받아줘서 고마워.',
     successHint: '',
-    interaction: {
-      type: 'leaning-choice'
-    },
+    interaction: { type: 'leaning-choice' },
     tags: ['layout', 'visual-persuasion', 'day-006']
   },
   {
@@ -52,9 +189,7 @@ window.MARRYME_DAYS = [
     successTitle: '고마워 💍',
     successBody: '앞으로 잘해줄게. 받아줘서 고마워.',
     successHint: '',
-    interaction: {
-      type: 'growing-yes'
-    },
+    interaction: { type: 'growing-yes' },
     tags: ['glow', 'cta', 'day-005']
   },
   {
@@ -91,9 +226,7 @@ window.MARRYME_DAYS = [
     successTitle: '고마워 💍',
     successBody: '앞으로 잘해줄게. 받아줘서 고마워.',
     successHint: '',
-    interaction: {
-      type: 'evasive-no'
-    },
+    interaction: { type: 'evasive-no' },
     tags: ['movement', 'evasive', 'day-003']
   },
   {
@@ -110,9 +243,7 @@ window.MARRYME_DAYS = [
     successTitle: '고마워 💍',
     successBody: '앞으로 잘해줄게. 받아줘서 고마워.',
     successHint: '',
-    interaction: {
-      type: 'shrinking-no'
-    },
+    interaction: { type: 'shrinking-no' },
     tags: ['playful', 'mischief', 'day-002']
   },
   {
@@ -129,9 +260,7 @@ window.MARRYME_DAYS = [
     successTitle: '역시 그럴 줄 알았어 💍',
     successBody: '앞으로 잘해줄게. 받아줘서 고마워.',
     successHint: '',
-    interaction: {
-      type: 'runaway-no'
-    },
+    interaction: { type: 'runaway-no' },
     tags: ['classic', 'runaway-button', 'day-001']
   }
 ];

@@ -3,11 +3,11 @@
 ## Purpose
 Push 전 QA 게이트 기록용 문서.
 
-## QA Run — 2026-03-15 / Day 008~015 planning package
+## QA Run — 2026-03-15 / Day 008~015 implementation
 ### Scope
-- what changed: Added PM/Planner documents for Day 008~015 (`SPEC_DAY8_15.md`, `TASKS_DAY8_15.md`, `QA_DAY8_15.md`, `PM_BRIEF_DAY8_15.md`) and updated roadmap priorities.
-- build/validation target: planning docs consistency and roadmap alignment
-- surfaces checked: project docs, task ordering, PM brief consistency, QA checklist coverage
+- what changed: Implemented Day 008~015 interactions, expanded data set to Day 015, updated interaction handler support, and refreshed docs.
+- build/validation target: day data validation, runtime syntax safety, archive/day detail rendering assumptions
+- surfaces checked: data structure, interaction handler registration, archive flow, detail flow, latest-day rendering
 
 ### Checks
 - [x] acceptance criteria reviewed
@@ -21,17 +21,21 @@ Push 전 QA 게이트 기록용 문서.
 ### Commands run
 ```bash
 npm run validate:days
+node --check app.js
+node --check data.js
+node --check script.js
+node --check day.js
 ```
 
 ### Result
 - status: PASS
-- summary: Planning package is internally consistent, aligned with current product tone, and safe to push. No code-path regressions introduced because this change is documentation-only.
+- summary: Validation passed for 15 day entries and runtime syntax checks passed. New interactions are implemented within the current handler framework and safe to push as MVP-level behavior.
 
 ### Findings
-- issue: No code implementation yet for Day 008~015 concepts
+- issue: Some Day 008~015 interactions are intentionally simple MVP versions and may need future polish for mobile nuance.
 - severity: low
-- status: expected / tracked in planning docs
+- status: accepted / tracked
 
 ### Push decision
 - allowed to push: yes
-- reason: QA passed for documentation scope and no unresolved blockers exist.
+- reason: QA passed and there are no blocking issues for deployment.
