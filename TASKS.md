@@ -6,15 +6,17 @@
 3. GitHub repo 생성 및 public push
 4. GitHub Pages 배포 연결
 5. 멀티롤 문서 정비 (`SPEC.md`, `UX.md`, `TASKS.md`, `REVIEW.md`)
-6. 접근성 보완용 calm mode 추가
-7. `data.js` 기반 날짜별 구조로 재편
-8. Day 002 추가
-9. 메인 화면에 아카이브 목록 추가
-10. 개별 day 상세 페이지 및 permalink 구조 추가
-11. 공통 렌더링 로직을 `app.js`로 분리
-12. 상세 페이지를 단일 템플릿으로 자동화 (`day/?slug=<slug>`)
+6. `data.js` 기반 날짜별 구조로 재편
+7. Day 002 추가
+8. 메인 화면에 아카이브 목록 추가
+9. 개별 day 상세 페이지 및 permalink 구조 추가
+10. 공통 렌더링 로직을 `app.js`로 분리
+11. 상세 페이지를 단일 템플릿으로 자동화 (`day/?slug=<slug>`)
+12. day metadata validation 추가
 13. 상세 페이지에 이전/다음 day 네비게이션 추가
 14. 이전/다음 day 네비게이션에 제목/설명 미리보기 추가
+15. 차분한 모드 제거
+16. Day 002 버튼 겹침/축소 버그 수정
 
 ## Next
 ### P0

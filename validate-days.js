@@ -22,8 +22,7 @@ const requiredStringFields = [
   'yesLabel',
   'noLabel',
   'hintDefault',
-  'calmHint',
-  'calmRejectMessage',
+  'rejectMessage',
   'successTitle',
   'successBody',
   'successHint'
