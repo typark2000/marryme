@@ -11,7 +11,7 @@ window.MARRYME_DAYS = [
     yesLabel: '좋아 💖',
     noLabel: '잠깐만 🙈',
     successTitle: '좋아, 이건 운명 판정이야 💍',
-    successBody: '결정을 내렸네. 오늘의 청혼 페이지는 아주 만족스러워하고 있어.',
+    successBody: '앞으로 잘해줄게. 받아줘서 고마워.',
     successHint: '',
     interaction: {
       type: 'shrinking-no',
@@ -32,7 +32,7 @@ window.MARRYME_DAYS = [
     yesLabel: '좋아 💖',
     noLabel: '싫어 🙈',
     successTitle: '역시 그럴 줄 알았어 💍',
-    successBody: '축하합니다. 오늘의 청혼 페이지를 통과했어요.',
+    successBody: '앞으로 잘해줄게. 받아줘서 고마워.',
     successHint: '',
     interaction: {
       type: 'runaway-no',
