@@ -21,7 +21,7 @@ h1,h3,h4{margin:0;} h1{font-size:clamp(2.2rem,5vw,4rem);} .lead,.section-copy,.e
 button{border:0; cursor:pointer; font-size:1rem; font-weight:700; transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;} button:hover{transform:translateY(-1px);} button:focus-visible,.text-link:focus-visible,.archive-item:focus-visible,.day-nav-link:focus-visible{outline:3px solid #8b5cf6; outline-offset:3px;}
 .yes-button{padding:16px 28px; border-radius:999px; color:white; background:linear-gradient(135deg,var(--accent),var(--accent-2)); box-shadow:0 16px 30px rgba(255,77,141,.24);} .no-button{padding:14px 22px; border-radius:999px; color:var(--text); background:#fff; box-shadow:0 12px 24px rgba(99,51,74,.12); transform-origin:center;}
 .yes-clone{font-size:.95rem; padding:14px 22px;}
-.dynamic-slot{margin-top:24px; min-height:28px;}.promise-line{margin:0; font-weight:700; color:var(--accent);}
+.dynamic-slot{margin-top:24px; min-height:28px;}.promise-line{margin:0; font-weight:700; color:var(--accent);} .prop{margin:0; font-weight:700; color:var(--accent);} .prop.faded{opacity:.6;}
 .decor-row{display:flex; justify-content:center; gap:12px; margin-top:8px; font-size:1.6rem; opacity:.9;}.decor-hidden{opacity:.18; transform:scale(.82)!important;}
 .card-deck-actions .yes-button,.card-deck-actions .no-button{border-radius:22px; min-width:180px; padding:18px 20px;}.card-main{transform:translateY(-6px) scale(1.04);}.card-sub{opacity:.82;}.card-main-boost{transform:translateY(-10px) scale(1.1)!important;}.card-sub-fade{opacity:.55;}
 .proposal-stage.is-runaway-no.runaway-active .no-button{position:absolute; left:calc(50% + 24px); top:0;}

@@ -1,306 +1,49 @@
 const allowedInteractionTypes = new Set([
-  'runaway-no',
-  'shrinking-no',
-  'evasive-no',
-  'swapping-labels',
-  'growing-yes',
-  'leaning-choice',
-  'confirm-stack',
-  'button-swap',
-  'layout-compress',
-  'multiplying-yes',
-  'fading-no',
-  'sentence-build',
-  'decorative-hide',
-  'card-deck-choice',
-  'finale-mix'
+  'runaway-no','shrinking-no','evasive-no','swapping-labels','growing-yes','leaning-choice','confirm-stack','button-swap','layout-compress','multiplying-yes','fading-no','sentence-build','decorative-hide','card-deck-choice','finale-mix','curtain-open','envelope-open','ribbon-untie','scratch-reveal','spotlight-reveal','fortune-cookie','polaroid-develop','balloon-lift','magnet-join','light-switch','wipe-fog','record-start','topper-rise','calendar-flip','heart-stamp','connect-dots','windup-open'
 ]);
-
-function getDays() {
-  return window.MARRYME_DAYS || [];
-}
-
-function validateDays(days) {
-  const errors = [];
-  const seenSlugs = new Set();
-
-  if (!Array.isArray(days) || !days.length) {
-    errors.push('No day data found.');
-    return { valid: false, errors };
-  }
-
-  days.forEach((day, index) => {
-    const prefix = `Day index ${index}`;
-    if (!day || typeof day !== 'object') return errors.push(`${prefix}: invalid object.`);
-    if (!day.slug || typeof day.slug !== 'string') errors.push(`${prefix}: missing slug.`);
-    else if (seenSlugs.has(day.slug)) errors.push(`${prefix}: duplicate slug '${day.slug}'.`);
-    else seenSlugs.add(day.slug);
-    if (!day.dayNumber || typeof day.dayNumber !== 'string') errors.push(`${prefix}: missing dayNumber.`);
-    if (!day.interaction || !allowedInteractionTypes.has(day.interaction.type)) {
-      errors.push(`${prefix}: invalid interaction type '${day?.interaction?.type}'.`);
-    }
-  });
-
-  return { valid: errors.length === 0, errors };
-}
-
-function findDayBySlug(slug) {
-  return getDays().find((day) => day.slug === slug);
-}
-
-function createProposalMarkup(day) {
-  const interactionClass = `is-${day.interaction?.type || 'default'}`;
-  return `
-    <p class="eyebrow">DAY ${day.dayNumber}</p>
-    <h1>${day.title}</h1>
-    <p class="lead">${day.intro}</p>
-    <div class="proposal-stage ${interactionClass}" id="proposalStage">
-      <div class="ring" aria-hidden="true">💍</div>
-      <h2>${day.proposalTitle}</h2>
-      <div class="actions" id="actionsArea">
-        <button class="yes-button" id="yesButton" type="button">${day.yesLabel}</button>
-        <button class="no-button" id="noButton" type="button" aria-label="거절 버튼">${day.noLabel}</button>
-      </div>
-      <div class="dynamic-slot" id="dynamicSlot"></div>
-    </div>
-  `;
-}
-
-function renderSuccessState(proposalStage, day) {
-  proposalStage.innerHTML = `
-    <div class="ring" aria-hidden="true">🎉</div>
-    <h2>${day.successTitle}</h2>
-    <p>${day.successBody}</p>
-  `;
-}
-
-function getHandlerContext(root) {
-  return {
-    root,
-    proposalStage: root.querySelector('#proposalStage'),
-    actionsArea: root.querySelector('#actionsArea'),
-    yesButton: root.querySelector('#yesButton'),
-    noButton: root.querySelector('#noButton'),
-    dynamicSlot: root.querySelector('#dynamicSlot')
-  };
-}
-
-function attachSharedSuccessHandler(day, ctx) {
-  ctx.yesButton.addEventListener('click', () => renderSuccessState(ctx.proposalStage, day));
-}
-
-function addRepeatEvents(target, handler) {
-  ['mouseenter', 'touchstart', 'focus', 'click'].forEach((eventName) => {
-    target.addEventListener(eventName, handler, { passive: eventName !== 'click' });
-  });
-}
-
-function handleRunawayNo(day, ctx) {
-  addRepeatEvents(ctx.noButton, (event) => {
-    if (event) event.preventDefault();
-    ctx.proposalStage.classList.add('runaway-active');
-    const stageRect = ctx.proposalStage.getBoundingClientRect();
-    const buttonRect = ctx.noButton.getBoundingClientRect();
-    const minX = 16, minY = 140;
-    const maxX = Math.max(minX, stageRect.width - buttonRect.width - 16);
-    const maxY = Math.max(minY, stageRect.height - buttonRect.height - 16);
-    ctx.noButton.style.left = `${minX + Math.random() * Math.max(0, maxX - minX)}px`;
-    ctx.noButton.style.top = `${minY + Math.random() * Math.max(0, maxY - minY)}px`;
-  });
-}
-
-function handleShrinkingNo(day, ctx) {
-  let step = 0;
-  addRepeatEvents(ctx.noButton, (event) => {
-    if (event?.type === 'click') event.preventDefault();
-    step += 1;
-    ctx.noButton.style.transform = `scale(${Math.max(0.12, 1 - step * 0.12)})`;
-  });
-}
-
-function handleEvasiveNo(day, ctx) {
-  let direction = 1;
-  addRepeatEvents(ctx.noButton, (event) => {
-    if (event) event.preventDefault();
-    ctx.noButton.style.transform = `translateX(${direction * 72}px)`;
-    direction *= -1;
-  });
-}
-
-function handleSwappingLabels(day, ctx) {
-  const labels = day.interaction.options || [day.noLabel];
-  let index = 0;
-  addRepeatEvents(ctx.noButton, (event) => {
-    if (event?.type === 'click') event.preventDefault();
-    index = Math.min(index + 1, labels.length - 1);
-    ctx.noButton.textContent = labels[index];
-  });
-}
-
-function handleGrowingYes(day, ctx) {
-  let step = 0;
-  addRepeatEvents(ctx.noButton, (event) => {
-    if (event?.type === 'click') event.preventDefault();
-    step = Math.min(step + 1, 5);
-    ctx.yesButton.style.transform = `scale(${1 + step * 0.12})`;
-    ctx.noButton.style.opacity = `${Math.max(0.35, 1 - step * 0.12)}`;
-  });
-}
-
-function handleLeaningChoice(day, ctx) {
-  ctx.proposalStage.classList.add('leaning-active');
-  addRepeatEvents(ctx.noButton, (event) => {
-    if (event?.type === 'click') event.preventDefault();
-    ctx.yesButton.style.transform = 'scale(1.08)';
-    ctx.noButton.style.transform = 'scale(0.92)';
-    ctx.noButton.style.opacity = '0.78';
-  });
-}
-
-function handleConfirmStack(day, ctx) {
-  addRepeatEvents(ctx.noButton, (event) => {
-    if (event) event.preventDefault();
-    if (ctx.proposalStage.querySelector('.confirm-overlay')) return;
-    const [a='다시 생각해볼게', b='그래도 좋아'] = day.interaction.options || [];
-    const overlay = document.createElement('div');
-    overlay.className = 'confirm-overlay';
-    overlay.innerHTML = `
-      <div class="confirm-card">
-        <p class="confirm-copy">한 번만 더 생각해줄래?</p>
-        <div class="confirm-actions">
-          <button type="button" class="confirm-secondary">${a}</button>
-          <button type="button" class="confirm-primary">${b}</button>
-        </div>
-      </div>`;
-    overlay.querySelector('.confirm-secondary').addEventListener('click', (e) => {
-      e.currentTarget.textContent = '그래도 좋아 💖';
-      overlay.querySelector('.confirm-primary').textContent = '좋아 💖';
-    });
-    overlay.querySelector('.confirm-primary').addEventListener('click', () => renderSuccessState(ctx.proposalStage, day));
-    ctx.proposalStage.appendChild(overlay);
-  });
-}
-
-function handleButtonSwap(day, ctx) {
-  let swapped = false;
-  addRepeatEvents(ctx.noButton, (event) => {
-    if (event) event.preventDefault();
-    if (swapped) return;
-    swapped = true;
-    ctx.actionsArea.insertBefore(ctx.noButton, ctx.yesButton);
-    setTimeout(() => { swapped = false; }, 220);
-  });
-}
-
-function handleLayoutCompress(day, ctx) {
-  let step = 0;
-  addRepeatEvents(ctx.noButton, (event) => {
-    if (event?.type === 'click') event.preventDefault();
-    step = Math.min(step + 1, 4);
-    ctx.proposalStage.style.paddingInline = `${24 - step * 3}px`;
-    ctx.noButton.style.transform = `scale(${Math.max(0.65, 1 - step * 0.08)})`;
-    ctx.yesButton.style.transform = `scale(${1 + step * 0.06})`;
-  });
-}
-
-function handleMultiplyingYes(day, ctx) {
-  let count = 0;
-  addRepeatEvents(ctx.noButton, (event) => {
-    if (event?.type === 'click') event.preventDefault();
-    if (count >= 4) return;
-    count += 1;
-    const clone = document.createElement('button');
-    clone.type = 'button';
-    clone.className = 'yes-button yes-clone';
-    clone.textContent = day.yesLabel;
-    clone.addEventListener('click', () => renderSuccessState(ctx.proposalStage, day));
-    ctx.actionsArea.appendChild(clone);
-  });
-}
-
-function handleFadingNo(day, ctx) {
-  let step = 0;
-  addRepeatEvents(ctx.noButton, (event) => {
-    if (event?.type === 'click') event.preventDefault();
-    step = Math.min(step + 1, 5);
-    ctx.noButton.style.opacity = `${Math.max(0.12, 1 - step * 0.16)}`;
-  });
-}
-
-function handleSentenceBuild(day, ctx) {
-  const parts = day.interaction.options || [];
-  let index = 0;
-  ctx.dynamicSlot.innerHTML = '<p class="promise-line" id="promiseLine"></p>';
-  const line = ctx.dynamicSlot.querySelector('#promiseLine');
-  addRepeatEvents(ctx.noButton, (event) => {
-    if (event?.type === 'click') event.preventDefault();
-    if (index >= parts.length) return;
-    line.textContent = `${line.textContent} ${parts[index]}`.trim();
-    index += 1;
-  });
-}
-
-function handleDecorativeHide(day, ctx) {
-  ctx.dynamicSlot.innerHTML = '<div class="decor-row"><span>💐</span><span>🎀</span><span>💖</span><span>✨</span></div>';
-  let hidden = false;
-  addRepeatEvents(ctx.noButton, (event) => {
-    if (event) event.preventDefault();
-    hidden = !hidden;
-    ctx.noButton.classList.toggle('decor-hidden', hidden);
-  });
-}
-
-function handleCardDeckChoice(day, ctx) {
-  ctx.actionsArea.classList.add('card-deck-actions');
-  ctx.yesButton.classList.add('card-main');
-  ctx.noButton.classList.add('card-sub');
-  addRepeatEvents(ctx.noButton, (event) => {
-    if (event?.type === 'click') event.preventDefault();
-    ctx.yesButton.classList.add('card-main-boost');
-    ctx.noButton.classList.add('card-sub-fade');
-  });
-}
-
-function handleFinaleMix(day, ctx) {
-  let step = 0;
-  addRepeatEvents(ctx.noButton, (event) => {
-    if (event?.type === 'click') event.preventDefault();
-    step += 1;
-    if (step === 1) ctx.noButton.style.transform = 'translateX(56px)';
-    if (step === 2) ctx.yesButton.style.transform = 'scale(1.08)';
-    if (step === 3) ctx.noButton.textContent = '그래도 좋아?';
-    if (step >= 4) handleConfirmStack(day, ctx);
-  });
-}
-
-const interactionHandlers = {
-  'runaway-no': handleRunawayNo,
-  'shrinking-no': handleShrinkingNo,
-  'evasive-no': handleEvasiveNo,
-  'swapping-labels': handleSwappingLabels,
-  'growing-yes': handleGrowingYes,
-  'leaning-choice': handleLeaningChoice,
-  'confirm-stack': handleConfirmStack,
-  'button-swap': handleButtonSwap,
-  'layout-compress': handleLayoutCompress,
-  'multiplying-yes': handleMultiplyingYes,
-  'fading-no': handleFadingNo,
-  'sentence-build': handleSentenceBuild,
-  'decorative-hide': handleDecorativeHide,
-  'card-deck-choice': handleCardDeckChoice,
-  'finale-mix': handleFinaleMix
+function getDays(){return window.MARRYME_DAYS||[];}
+function validateDays(days){const errors=[];const seenSlugs=new Set();if(!Array.isArray(days)||!days.length){errors.push('No day data found.');return{valid:false,errors};}days.forEach((day,index)=>{const prefix=`Day index ${index}`;if(!day||typeof day!=='object')return errors.push(`${prefix}: invalid object.`);if(!day.slug||typeof day.slug!=='string')errors.push(`${prefix}: missing slug.`);else if(seenSlugs.has(day.slug))errors.push(`${prefix}: duplicate slug '${day.slug}'.`);else seenSlugs.add(day.slug);if(!day.dayNumber||typeof day.dayNumber!=='string')errors.push(`${prefix}: missing dayNumber.`);if(!day.interaction||!allowedInteractionTypes.has(day.interaction.type))errors.push(`${prefix}: invalid interaction type '${day?.interaction?.type}'.`);});return{valid:errors.length===0,errors};}
+function findDayBySlug(slug){return getDays().find((day)=>day.slug===slug);}
+function createProposalMarkup(day){const interactionClass=`is-${day.interaction?.type||'default'}`;return `<p class="eyebrow">DAY ${day.dayNumber}</p><h1>${day.title}</h1><p class="lead">${day.intro}</p><div class="proposal-stage ${interactionClass}" id="proposalStage"><div class="ring" aria-hidden="true">💍</div><h2>${day.proposalTitle}</h2><div class="actions" id="actionsArea"><button class="yes-button" id="yesButton" type="button">${day.yesLabel}</button><button class="no-button" id="noButton" type="button" aria-label="거절 버튼">${day.noLabel}</button></div><div class="dynamic-slot" id="dynamicSlot"></div></div>`;}
+function renderSuccessState(proposalStage,day){proposalStage.innerHTML=`<div class="ring" aria-hidden="true">🎉</div><h2>${day.successTitle}</h2><p>${day.successBody}</p>`;}
+function getHandlerContext(root){return{root,proposalStage:root.querySelector('#proposalStage'),actionsArea:root.querySelector('#actionsArea'),yesButton:root.querySelector('#yesButton'),noButton:root.querySelector('#noButton'),dynamicSlot:root.querySelector('#dynamicSlot')}}
+function attachSharedSuccessHandler(day,ctx){ctx.yesButton.addEventListener('click',()=>renderSuccessState(ctx.proposalStage,day));}
+function addRepeatEvents(target,handler){['mouseenter','touchstart','focus','click'].forEach((eventName)=>{target.addEventListener(eventName,handler,{passive:eventName!=='click'});});}
+function simpleToggleClassHandler(className, mutate){return (day,ctx)=>{let step=0;addRepeatEvents(ctx.noButton,(event)=>{if(event?.type==='click')event.preventDefault();ctx.proposalStage.classList.add(className);step+=1;if(mutate)mutate(ctx,step,day);});};}
+const handlers={
+'runaway-no':(day,ctx)=>addRepeatEvents(ctx.noButton,(event)=>{if(event)event.preventDefault();ctx.proposalStage.classList.add('runaway-active');const s=ctx.proposalStage.getBoundingClientRect();const b=ctx.noButton.getBoundingClientRect();const minX=16,minY=140,maxX=Math.max(minX,s.width-b.width-16),maxY=Math.max(minY,s.height-b.height-16);ctx.noButton.style.left=`${minX+Math.random()*Math.max(0,maxX-minX)}px`;ctx.noButton.style.top=`${minY+Math.random()*Math.max(0,maxY-minY)}px`;}) ,
+'shrinking-no':(day,ctx)=>{let step=0;addRepeatEvents(ctx.noButton,(event)=>{if(event?.type==='click')event.preventDefault();step+=1;ctx.noButton.style.transform=`scale(${Math.max(0.12,1-step*0.12)})`;});},
+'evasive-no':(day,ctx)=>{let d=1;addRepeatEvents(ctx.noButton,(event)=>{if(event)event.preventDefault();ctx.noButton.style.transform=`translateX(${d*72}px)`;d*=-1;});},
+'swapping-labels':(day,ctx)=>{const labels=day.interaction.options||[day.noLabel];let i=0;addRepeatEvents(ctx.noButton,(event)=>{if(event?.type==='click')event.preventDefault();i=Math.min(i+1,labels.length-1);ctx.noButton.textContent=labels[i];});},
+'growing-yes':(day,ctx)=>{let step=0;addRepeatEvents(ctx.noButton,(event)=>{if(event?.type==='click')event.preventDefault();step=Math.min(step+1,5);ctx.yesButton.style.transform=`scale(${1+step*0.12})`;ctx.noButton.style.opacity=`${Math.max(0.35,1-step*0.12)}`;});},
+'leaning-choice':(day,ctx)=>{ctx.proposalStage.classList.add('leaning-active');addRepeatEvents(ctx.noButton,(event)=>{if(event?.type==='click')event.preventDefault();ctx.yesButton.style.transform='scale(1.08)';ctx.noButton.style.transform='scale(0.92)';ctx.noButton.style.opacity='0.78';});},
+'confirm-stack':(day,ctx)=>addRepeatEvents(ctx.noButton,(event)=>{if(event)event.preventDefault();if(ctx.proposalStage.querySelector('.confirm-overlay'))return;const [a='다시 생각해볼게',b='그래도 좋아']=day.interaction.options||[];const overlay=document.createElement('div');overlay.className='confirm-overlay';overlay.innerHTML=`<div class="confirm-card"><p class="confirm-copy">한 번만 더 생각해줄래?</p><div class="confirm-actions"><button type="button" class="confirm-secondary">${a}</button><button type="button" class="confirm-primary">${b}</button></div></div>`;overlay.querySelector('.confirm-secondary').addEventListener('click',(e)=>{e.currentTarget.textContent='그래도 좋아 💖';overlay.querySelector('.confirm-primary').textContent='좋아 💖';});overlay.querySelector('.confirm-primary').addEventListener('click',()=>renderSuccessState(ctx.proposalStage,day));ctx.proposalStage.appendChild(overlay);}),
+'button-swap':(day,ctx)=>{let swapped=false;addRepeatEvents(ctx.noButton,(event)=>{if(event)event.preventDefault();if(swapped)return;swapped=true;ctx.actionsArea.insertBefore(ctx.noButton,ctx.yesButton);setTimeout(()=>{swapped=false;},220);});},
+'layout-compress':(day,ctx)=>{let step=0;addRepeatEvents(ctx.noButton,(event)=>{if(event?.type==='click')event.preventDefault();step=Math.min(step+1,4);ctx.proposalStage.style.paddingInline=`${24-step*3}px`;ctx.noButton.style.transform=`scale(${Math.max(0.65,1-step*0.08)})`;ctx.yesButton.style.transform=`scale(${1+step*0.06})`;});},
+'multiplying-yes':(day,ctx)=>{let count=0;addRepeatEvents(ctx.noButton,(event)=>{if(event?.type==='click')event.preventDefault();if(count>=4)return;count+=1;const clone=document.createElement('button');clone.type='button';clone.className='yes-button yes-clone';clone.textContent=day.yesLabel;clone.addEventListener('click',()=>renderSuccessState(ctx.proposalStage,day));ctx.actionsArea.appendChild(clone);});},
+'fading-no':(day,ctx)=>{let step=0;addRepeatEvents(ctx.noButton,(event)=>{if(event?.type==='click')event.preventDefault();step=Math.min(step+1,5);ctx.noButton.style.opacity=`${Math.max(0.12,1-step*0.16)}`;});},
+'sentence-build':(day,ctx)=>{const parts=day.interaction.options||[];let i=0;ctx.dynamicSlot.innerHTML='<p class="promise-line" id="promiseLine"></p>';const line=ctx.dynamicSlot.querySelector('#promiseLine');addRepeatEvents(ctx.noButton,(event)=>{if(event?.type==='click')event.preventDefault();if(i>=parts.length)return;line.textContent=`${line.textContent} ${parts[i]}`.trim();i+=1;});},
+'decorative-hide':(day,ctx)=>{ctx.dynamicSlot.innerHTML='<div class="decor-row"><span>💐</span><span>🎀</span><span>💖</span><span>✨</span></div>';let hidden=false;addRepeatEvents(ctx.noButton,(event)=>{if(event)event.preventDefault();hidden=!hidden;ctx.noButton.classList.toggle('decor-hidden',hidden);});},
+'card-deck-choice':(day,ctx)=>{ctx.actionsArea.classList.add('card-deck-actions');ctx.yesButton.classList.add('card-main');ctx.noButton.classList.add('card-sub');addRepeatEvents(ctx.noButton,(event)=>{if(event?.type==='click')event.preventDefault();ctx.yesButton.classList.add('card-main-boost');ctx.noButton.classList.add('card-sub-fade');});},
+'finale-mix':(day,ctx)=>{let step=0;addRepeatEvents(ctx.noButton,(event)=>{if(event?.type==='click')event.preventDefault();step+=1;if(step===1)ctx.noButton.style.transform='translateX(56px)';if(step===2)ctx.yesButton.style.transform='scale(1.08)';if(step===3)ctx.noButton.textContent='그래도 좋아?';if(step>=4)handlers['confirm-stack'](day,ctx);});},
+'curtain-open':(day,ctx)=>{ctx.dynamicSlot.innerHTML='<div class="prop curt">🎭 커튼을 열어줘</div>';let opened=false;addRepeatEvents(ctx.noButton,(e)=>{if(e)e.preventDefault();if(opened)return;opened=true;ctx.proposalStage.classList.add('revealed');ctx.dynamicSlot.innerHTML='<div class="prop">커튼이 열렸어</div>';});},
+'envelope-open':(day,ctx)=>{ctx.dynamicSlot.innerHTML='<div class="prop envelope">✉️ 봉투를 열어줘</div>';addRepeatEvents(ctx.noButton,(e)=>{if(e)e.preventDefault();ctx.dynamicSlot.innerHTML='<div class="prop">편지가 열렸어</div>';ctx.noButton.style.transform='rotate(-6deg)';});},
+'ribbon-untie':simpleToggleClassHandler('ribbon-open',(ctx,step)=>{ctx.dynamicSlot.innerHTML=`<div class="prop">리본 ${Math.min(step,2)}/2</div>`;}),
+'scratch-reveal':simpleToggleClassHandler('scratch-open',(ctx,step)=>{ctx.dynamicSlot.innerHTML=`<div class="prop">스크래치 ${Math.min(step,4)}/4</div>`;ctx.yesButton.style.opacity=`${Math.min(1,0.4+step*0.15)}`;}),
+'spotlight-reveal':simpleToggleClassHandler('spotlight-on',(ctx)=>{ctx.yesButton.classList.add('lit');}),
+'fortune-cookie':simpleToggleClassHandler('cookie-open',(ctx)=>{ctx.dynamicSlot.innerHTML='<div class="prop">🥠 마음은 이미 나왔어</div>';}),
+'polaroid-develop':(day,ctx)=>{ctx.dynamicSlot.innerHTML='<div class="prop faded">현상 중…</div>';setTimeout(()=>{if(ctx.dynamicSlot)ctx.dynamicSlot.innerHTML='<div class="prop">사진이 다 나왔어</div>';},1200);},
+'balloon-lift':simpleToggleClassHandler('balloon-up',(ctx)=>{ctx.dynamicSlot.innerHTML='<div class="prop">🎈 떠올랐어</div>';ctx.noButton.style.transform='translateY(-24px)';}),
+'magnet-join':simpleToggleClassHandler('magnet-joined',(ctx)=>{ctx.dynamicSlot.innerHTML='<div class="prop">🧲 두 조각이 붙었어</div>';ctx.yesButton.style.transform='scale(1.06)';}),
+'light-switch':simpleToggleClassHandler('lights-on',(ctx)=>{ctx.proposalStage.style.filter='brightness(1.08)';ctx.dynamicSlot.innerHTML='<div class="prop">불이 켜졌어</div>';}),
+'wipe-fog':simpleToggleClassHandler('fog-cleared',(ctx)=>{ctx.dynamicSlot.innerHTML='<div class="prop">유리가 맑아졌어</div>';ctx.proposalStage.style.backdropFilter='blur(0px)';}),
+'record-start':simpleToggleClassHandler('record-playing',(ctx)=>{ctx.dynamicSlot.innerHTML='<div class="prop">🎵 돌아간다</div>';ctx.yesButton.style.transform='scale(1.04)';}),
+'topper-rise':simpleToggleClassHandler('topper-up',(ctx)=>{ctx.yesButton.style.transform='translateY(-14px)';ctx.dynamicSlot.innerHTML='<div class="prop">토퍼가 올라왔어</div>';}),
+'calendar-flip':simpleToggleClassHandler('calendar-open',(ctx)=>{ctx.dynamicSlot.innerHTML='<div class="prop">오늘이야</div>';ctx.noButton.style.opacity='.72';}),
+'heart-stamp':simpleToggleClassHandler('stamp-done',(ctx)=>{ctx.dynamicSlot.innerHTML='<div class="prop">❤️ 도장이 찍혔어</div>';ctx.yesButton.style.transform='scale(1.05)';}),
+'connect-dots':(day,ctx)=>{let step=0;ctx.dynamicSlot.innerHTML='<div class="prop">점 0/4</div>';addRepeatEvents(ctx.noButton,(e)=>{if(e?.type==='click')e.preventDefault();step=Math.min(step+1,4);ctx.dynamicSlot.innerHTML=`<div class="prop">점 ${step}/4</div>`;if(step===4)ctx.yesButton.style.transform='scale(1.08)';});},
+'windup-open':(day,ctx)=>{let step=0;ctx.dynamicSlot.innerHTML='<div class="prop">감는 중 0/3</div>';addRepeatEvents(ctx.noButton,(e)=>{if(e?.type==='click')e.preventDefault();step=Math.min(step+1,3);ctx.dynamicSlot.innerHTML=`<div class="prop">감는 중 ${step}/3</div>`;if(step===3)ctx.dynamicSlot.innerHTML='<div class="prop">오르골이 열렸어</div>';});}
 };
-
-function setupDayInteraction(day, root) {
-  const ctx = getHandlerContext(root);
-  attachSharedSuccessHandler(day, ctx);
-  const handler = interactionHandlers[day.interaction.type];
-  if (handler) handler(day, ctx);
-}
-
-function renderProposalExperience(root, day) {
-  root.innerHTML = createProposalMarkup(day);
-  setupDayInteraction(day, root);
-}
-
-window.MarryMeApp = { allowedInteractionTypes, getDays, validateDays, findDayBySlug, renderProposalExperience };
+function setupDayInteraction(day,root){const ctx=getHandlerContext(root);attachSharedSuccessHandler(day,ctx);const handler=handlers[day.interaction.type];if(handler)handler(day,ctx);}
+function renderProposalExperience(root,day){root.innerHTML=createProposalMarkup(day);setupDayInteraction(day,root);}
+window.MarryMeApp={allowedInteractionTypes,getDays,validateDays,findDayBySlug,renderProposalExperience};
