@@ -71,7 +71,7 @@ h1 {
   padding: 32px 24px 64px;
   min-height: 320px;
   border-radius: 24px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.72));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.72));
   overflow: hidden;
 }
 
@@ -82,6 +82,28 @@ h1 {
 h2 {
   margin: 16px 0 8px;
   font-size: clamp(1.8rem, 4vw, 2.6rem);
+}
+
+.mode-toggle {
+  width: min(420px, 100%);
+  margin: 20px auto 0;
+  padding: 14px 16px;
+  text-align: left;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+}
+
+.toggle-help {
+  margin: 8px 0 0;
+  font-size: 0.95rem;
+  opacity: 0.82;
 }
 
 .actions {
@@ -100,6 +122,12 @@ button {
 
 button:hover {
   transform: translateY(-1px);
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid #8b5cf6;
+  outline-offset: 3px;
 }
 
 .yes-button {
@@ -121,6 +149,17 @@ button:hover {
   box-shadow: 0 12px 24px rgba(99, 51, 74, 0.12);
 }
 
+.proposal-stage.calm-mode .actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+}
+
+.proposal-stage.calm-mode .no-button {
+  position: static;
+}
+
 .hint {
   margin-top: 32px;
   opacity: 0.8;
@@ -139,6 +178,16 @@ button:hover {
   line-height: 1.8;
 }
 
+.noscript-banner {
+  width: min(980px, calc(100% - 32px));
+  margin: 0 auto 24px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #fff;
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+
 @media (max-width: 640px) {
   .hero {
     padding: 28px 20px;
@@ -150,5 +199,19 @@ button:hover {
 
   .no-button {
     left: 55%;
+  }
+
+  .proposal-stage.calm-mode .actions {
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto;
+  }
+
+  button {
+    transition: none;
   }
 }

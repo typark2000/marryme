@@ -21,16 +21,24 @@
         </p>
 
         <div class="proposal-stage" id="proposalStage">
-          <div class="ring">💍</div>
+          <div class="ring" aria-hidden="true">💍</div>
           <h2>나랑 결혼해줄래?</h2>
           <p>버튼을 눌러봐. 아주 공정한 선택지를 준비했어.</p>
 
-          <div class="actions">
-            <button class="yes-button" id="yesButton">좋아 💖</button>
-            <button class="no-button" id="noButton" aria-label="거절 버튼">싫어 🙈</button>
+          <div class="mode-toggle">
+            <label class="toggle-label" for="calmModeToggle">
+              <input type="checkbox" id="calmModeToggle" />
+              차분한 모드 (움직임 줄이기)
+            </label>
+            <p class="toggle-help">모션이 불편하면 켜면 돼. 그러면 버튼이 도망가지 않아.</p>
           </div>
 
-          <p class="hint" id="hint">힌트: 거절은 생각보다 어렵다.</p>
+          <div class="actions" id="actionsArea">
+            <button class="yes-button" id="yesButton">좋아 💖</button>
+            <button class="no-button" id="noButton" type="button" aria-label="거절 버튼">싫어 🙈</button>
+          </div>
+
+          <p class="hint" id="hint" aria-live="polite">힌트: 거절은 생각보다 어렵다.</p>
         </div>
       </section>
 
@@ -48,6 +56,12 @@
         </ul>
       </section>
     </main>
+
+    <noscript>
+      <div class="noscript-banner">
+        JavaScript가 꺼져 있어 인터랙션은 제한되지만, 페이지 내용은 계속 볼 수 있어.
+      </div>
+    </noscript>
 
     <script src="script.js"></script>
   </body>
