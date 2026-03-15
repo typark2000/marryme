@@ -10,7 +10,8 @@
 4. 필요하면 calm mode를 켠다.
 5. 아래 아카이브 섹션에서 이전 디자인 카드를 본다.
 6. 원하는 카드를 눌러 `day/?slug=<slug>` 상세 페이지로 이동한다.
-7. 상세 페이지에서 다른 day로 다시 이동하거나 메인으로 돌아간다.
+7. 상세 페이지 상단의 이전/다음 day 네비게이션으로 연속 탐색한다.
+8. 필요하면 메인으로 돌아가거나 related days로 더 둘러본다.
 
 ## Screens / states
 ### A. Home / Today state
@@ -24,6 +25,7 @@
 ### C. Day detail state
 - 선택한 day를 단일 상세 템플릿에서 렌더링
 - 상단에 back link 제공
+- 상단에 이전/다음 day 네비게이션 제공
 - 하단에 다른 day 탐색 카드 제공
 
 ### D. Interaction state
@@ -47,6 +49,7 @@
 - Hint / status text
 - Archive grid
 - Detail header
+- Previous / next day navigation
 - Related days grid
 - About section
 
@@ -65,5 +68,5 @@
 - 키보드 포커스 표시 유지
 - reduced motion 존중
 - calm mode 제공
-- 링크 카드의 포커스 가능 상태 유지
+- 링크 카드와 네비게이션 링크의 포커스 가능 상태 유지
 - 이모지는 장식 역할만 하도록 처리

@@ -1,7 +1,7 @@
 # REVIEW.md — marryme review
 
 ## Review summary
-검토 범위: 정적 프론트엔드 구조, permalink 자동화, day metadata validation, 접근성, 공개 저장소 노출 위험
+검토 범위: 정적 프론트엔드 구조, permalink 자동화, day metadata validation, 탐색성, 접근성, 공개 저장소 노출 위험
 
 ## Risk-ranked issues
 
@@ -10,7 +10,7 @@
 
 ### Medium
 1. **interaction 타입 증가 시 app.js 복잡도 상승 가능성**
-   - 검증 레일은 추가됐지만 interaction 분기는 계속 늘어날 수 있음.
+   - 검증 레일과 네비게이션은 추가됐지만 interaction 분기는 계속 늘어날 수 있음.
    - 영향: 유지보수성 저하 가능성
    - 상태: 미해결
 
@@ -20,9 +20,9 @@
    - 상태: 허용
 
 ### Low
-1. **검증 오류 UI는 운영자 친화적이지만 일반 사용자 친화적이진 않음**
-   - 현재는 data 오류 시 상세 에러를 보여줌.
-   - 영향: 디버깅엔 좋지만 프로덕션 사용자에겐 거칠 수 있음.
+1. **이전/다음 네비게이션 정보 밀도는 아직 얕음**
+   - 현재는 day 번호 중심으로 탐색함.
+   - 영향: 사용성은 좋아졌지만 더 풍부하게 개선 가능
    - 상태: 허용
 
 ## Security review
@@ -40,7 +40,7 @@
 - reduced motion 대응 존재
 - calm mode 존재
 - 키보드 포커스 스타일 유지
-- 링크형 카드와 텍스트 링크에 focus-visible 적용됨
+- 링크형 카드, 텍스트 링크, day navigation 링크에 focus-visible 적용됨
 - 오류 상태에서도 메인 복귀 링크 제공
 
 ## Release risk review
@@ -50,4 +50,4 @@
 
 ## Recommendation
 현재 구조는 공개 가능한 MVP로 충분하다.
-다음 큰 업데이트에서는 previous/next navigation과 interaction 모듈화를 우선 추가할 것.
+다음 큰 업데이트에서는 interaction 모듈화와 navigation 정보 강화(제목/설명 preview)를 우선 추가할 것.

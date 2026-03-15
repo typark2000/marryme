@@ -21,6 +21,29 @@ function createRelatedCard(day) {
   `;
 }
 
+function createDayNav(day) {
+  const index = days.findIndex((item) => item.slug === day.slug);
+  const previousDay = index >= 0 && index < days.length - 1 ? days[index + 1] : null;
+  const nextDay = index > 0 ? days[index - 1] : null;
+
+  return `
+    <nav class="day-nav" aria-label="day navigation">
+      ${previousDay
+        ? `<a class="day-nav-link" href="../day/?slug=${previousDay.slug}">
+            <span class="day-nav-label">← 이전 day</span>
+            <strong>Day ${previousDay.dayNumber}</strong>
+          </a>`
+        : '<span class="day-nav-link is-disabled"><span class="day-nav-label">← 이전 day</span><strong>없음</strong></span>'}
+      ${nextDay
+        ? `<a class="day-nav-link" href="../day/?slug=${nextDay.slug}">
+            <span class="day-nav-label">다음 day →</span>
+            <strong>Day ${nextDay.dayNumber}</strong>
+          </a>`
+        : '<span class="day-nav-link is-disabled"><span class="day-nav-label">다음 day →</span><strong>없음</strong></span>'}
+    </nav>
+  `;
+}
+
 function renderValidationError(errors) {
   document.title = 'Marry Me — Data Error';
   detailHeader.innerHTML = `
@@ -39,6 +62,7 @@ function createDetailHeader(day) {
     <h1>Day ${day.dayNumber}</h1>
     <p class="section-copy">${day.subtitle}</p>
     <p><a class="text-link" href="../">← 메인으로 돌아가기</a></p>
+    ${createDayNav(day)}
   `;
 }
 

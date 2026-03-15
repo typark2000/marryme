@@ -204,6 +204,38 @@ input:focus-visible,
   margin-bottom: 20px;
 }
 
+.day-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.day-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--text);
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+}
+
+.day-nav-link strong {
+  font-size: 1rem;
+}
+
+.day-nav-label {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.day-nav-link.is-disabled {
+  opacity: 0.5;
+}
+
 .archive-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
