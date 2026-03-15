@@ -50,7 +50,7 @@ function findDayBySlug(slug) {
 }
 
 function createProposalMarkup(day) {
-  const interactionClass = day.interaction?.type === 'shrinking-no' ? 'is-shrinking-no' : '';
+  const interactionClass = `is-${day.interaction?.type || 'default'}`;
 
   return `
     <p class="eyebrow">DAY ${day.dayNumber}</p>
@@ -88,13 +88,15 @@ function setupDayInteraction(day, root) {
   function moveRunawayButton(event) {
     if (event) event.preventDefault();
 
+    proposalStage.classList.add('runaway-active');
+
     const stageRect = proposalStage.getBoundingClientRect();
     const buttonRect = noButton.getBoundingClientRect();
     const maxX = Math.max(16, stageRect.width - buttonRect.width - 16);
     const maxY = Math.max(16, stageRect.height - buttonRect.height - 16);
 
     noButton.style.left = `${Math.max(16, Math.random() * maxX)}px`;
-    noButton.style.top = `${Math.max(16, Math.random() * maxY)}px`;
+    noButton.style.top = `${Math.max(140, Math.random() * maxY)}px`;
     hint.textContent = randomMessage();
   }
 

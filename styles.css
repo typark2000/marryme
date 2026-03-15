@@ -116,14 +116,11 @@ h2 {
   position: relative;
   margin-top: 32px;
   min-height: 120px;
-}
-
-.proposal-stage.is-shrinking-no .actions {
   display: flex;
   gap: 12px;
   justify-content: center;
   align-items: center;
-  min-height: auto;
+  flex-wrap: wrap;
 }
 
 button {
@@ -155,9 +152,6 @@ button:focus-visible,
 }
 
 .no-button {
-  position: absolute;
-  left: calc(50% + 24px);
-  top: 0;
   padding: 14px 22px;
   border-radius: 999px;
   color: var(--text);
@@ -166,10 +160,10 @@ button:focus-visible,
   transform-origin: center;
 }
 
-.proposal-stage.is-shrinking-no .no-button {
-  position: static;
-  left: auto;
-  top: auto;
+.proposal-stage.is-runaway-no.runaway-active .no-button {
+  position: absolute;
+  left: calc(50% + 24px);
+  top: 0;
 }
 
 .hint {
@@ -302,19 +296,10 @@ button:focus-visible,
     min-height: 360px;
   }
 
-  .no-button {
-    left: 55%;
-  }
-
-  .proposal-stage.is-shrinking-no .actions,
   .section-heading,
   .day-nav {
     flex-direction: column;
     align-items: stretch;
-  }
-
-  .proposal-stage.is-shrinking-no .actions {
-    display: flex;
   }
 
   .day-nav {
