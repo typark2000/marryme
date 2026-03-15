@@ -25,8 +25,7 @@ window.MARRYME_DAYS = [
     slug: 'day-001',
     title: '오늘의 청혼 페이지',
     subtitle: '거절 버튼은 오늘도 잡히지 않는다.',
-    intro:
-      '매일 새롭고, 매일 조금 더 집요한 방식으로 청혼하는 웹 디자인 실험실. 오늘의 거절 버튼은... 잡히지 않습니다.',
+    intro: '내 마음을 받아줘 제발~~',
     proposalTitle: '나랑 결혼해줄래?',
     proposalBody: '',
     yesLabel: '좋아 💖',
