@@ -3,9 +3,9 @@
 ## Purpose
 Push 전 QA 게이트 기록용 문서.
 
-## QA Run — 2026-03-15 / Day 050~066 implementation
+## QA Run — 2026-03-16 / Day 067~082 implementation
 ### Scope
-- what changed: Implemented Wave 3 days (050~066), expanded data set to Day 066, updated interaction handlers and validation.
+- what changed: Implemented Wave 4 days (067~082), expanded data set to Day 082, updated interaction handlers and validation.
 - build/validation target: day data validation, runtime syntax safety, archive/day detail rendering assumptions
 - surfaces checked: data structure, handler registration, latest-day rendering, archive continuity, day detail navigation
 
@@ -29,10 +29,10 @@ node --check day.js
 
 ### Result
 - status: PASS
-- summary: Validation passed for 66 day entries and runtime syntax checks passed. Wave 3 interactions are registered as MVP-safe behaviors and earlier waves remain structurally intact.
+- summary: Validation passed for 82 day entries and runtime syntax checks passed. Wave 4 interactions are registered as MVP-safe behaviors and earlier waves remain structurally intact.
 
 ### Findings
-- issue: Several timing/tactile interactions are simplified placeholder behaviors and should get richer presentation later.
+- issue: Several perception-focused interactions are represented as simplified MVP reveals and can be visually refined later.
 - severity: low
 - status: accepted / tracked
 
