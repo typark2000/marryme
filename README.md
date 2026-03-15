@@ -16,3 +16,8 @@
 ## 실행 방법
 
 브라우저에서 `index.html`을 열면 된다.
+
+## 배포
+
+GitHub Pages로 자동 배포된다.
+예상 URL: `https://typark2000.github.io/marryme/`
