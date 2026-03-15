@@ -9,11 +9,11 @@
 - 날짜별 아카이브와 상세 페이지로 확장 가능
 
 ## 현재 상태
-- data-driven 구조로 재편 완료
-- Day 001 / Day 002 디자인 데이터 등록 완료
+- Day 001 ~ Day 007 디자인 데이터 등록 완료
 - 메인에서 오늘의 디자인 + 아카이브 목록 표시
 - 단일 상세 템플릿 `day/?slug=<slug>` 지원
 - 상세 페이지 이전/다음 네비게이션 지원
+- interaction type별 공통 핸들러 구조 적용
 - GitHub Pages 자동 배포 연결 완료
 - 멀티롤 문서(`SPEC.md`, `UX.md`, `TASKS.md`, `REVIEW.md`) 정리 완료
 
@@ -27,6 +27,15 @@
 - `styles.css` — 공통 스타일
 - `SPEC.md`, `UX.md`, `TASKS.md`, `REVIEW.md` — 기획/리뷰 문서
 - `NOTION_UPDATE_TEMPLATE.md` — 큰 업데이트 기록용 템플릿
+
+## Current day concepts
+- Day 001 — runaway-no
+- Day 002 — shrinking-no
+- Day 003 — evasive-no
+- Day 004 — swapping-labels
+- Day 005 — growing-yes
+- Day 006 — leaning-choice
+- Day 007 — confirm-stack
 
 ## Run
 ### 로컬 실행
@@ -57,7 +66,7 @@ npm run validate:days
 - slug / id / dayNumber 중복
 - 필수 문자열 필드 누락
 - interaction type 유효성
-- interaction messages 존재 여부
+- interaction options/messages 자료형
 
 ## Deploy
 - GitHub Pages로 자동 배포된다.
@@ -66,18 +75,15 @@ npm run validate:days
 ## Demo
 - GitHub repo: <https://github.com/typark2000/marryme>
 - Live demo: <https://typark2000.github.io/marryme/>
-- Day 001: <https://typark2000.github.io/marryme/day/?slug=day-001>
-- Day 002: <https://typark2000.github.io/marryme/day/?slug=day-002>
+- Day detail example: <https://typark2000.github.io/marryme/day/?slug=day-007>
 
 ## 새 디자인 추가 방법
 1. 새 날짜/새 콘셉트 기획 정리
 2. `SPEC.md` / `UX.md` / `TASKS.md` 영향 범위 확인
 3. `data.js`에 새 day 객체 추가
-4. 필요한 인터랙션이 있으면 `app.js`에 타입 추가
+4. 필요한 인터랙션이 있으면 `app.js`에 핸들러 추가
 5. `npm run validate:days` 실행
 6. 로컬 확인
 7. public push 전 비밀정보/디버그 로그 점검
 8. 큰 업데이트인 경우에만 Notion `Project Updates`에 기록
 9. push 후 Pages 배포 확인
-
-이제는 상세 페이지용 HTML 파일을 day마다 따로 만들 필요가 없다.

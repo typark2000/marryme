@@ -9,7 +9,15 @@ vm.createContext(context);
 vm.runInContext(source, context);
 
 const days = context.window.MARRYME_DAYS;
-const allowedInteractionTypes = new Set(['runaway-no', 'shrinking-no']);
+const allowedInteractionTypes = new Set([
+  'runaway-no',
+  'shrinking-no',
+  'evasive-no',
+  'swapping-labels',
+  'growing-yes',
+  'leaning-choice',
+  'confirm-stack'
+]);
 const requiredStringFields = [
   'id',
   'dayNumber',
@@ -93,8 +101,12 @@ const seenDayNumbers = new Set();
       );
     }
 
-    if (!Array.isArray(day.interaction.messages)) {
-      errors.push(`${prefix}: interaction.messages must be an array.`);
+    if ('messages' in day.interaction && !Array.isArray(day.interaction.messages)) {
+      errors.push(`${prefix}: interaction.messages must be an array when provided.`);
+    }
+
+    if ('options' in day.interaction && !Array.isArray(day.interaction.options)) {
+      errors.push(`${prefix}: interaction.options must be an array when provided.`);
     }
   }
 });

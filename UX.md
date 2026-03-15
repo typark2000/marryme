@@ -1,7 +1,7 @@
 # UX.md — marryme flow
 
 ## Experience goal
-첫 화면에서 오늘의 청혼 디자인을 바로 체험하고, 이전 디자인은 상세 페이지까지 자연스럽게 이동해 탐색할 수 있는 경험.
+첫 화면에서 오늘의 청혼 디자인을 바로 체험하고, 이전 디자인은 상세 페이지까지 자연스럽게 이동해 비교 탐색할 수 있는 경험.
 
 ## Primary screen flow
 1. 사용자가 메인 페이지에 진입한다.
@@ -10,8 +10,16 @@
 4. 아래 아카이브 섹션에서 이전 디자인 카드를 본다.
 5. 원하는 카드를 눌러 `day/?slug=<slug>` 상세 페이지로 이동한다.
 6. 상세 페이지 상단의 이전/다음 day 네비게이션으로 연속 탐색한다.
-7. 네비 카드에서 다음 day의 제목과 짧은 설명을 미리 보고 이동한다.
-8. 필요하면 메인으로 돌아가거나 related days로 더 둘러본다.
+7. 네비 카드와 related days를 통해 다른 day를 비교한다.
+
+## Day interaction set
+- Day 001 — runaway-no
+- Day 002 — shrinking-no
+- Day 003 — evasive-no
+- Day 004 — swapping-labels
+- Day 005 — growing-yes
+- Day 006 — leaning-choice
+- Day 007 — confirm-stack
 
 ## Screens / states
 ### A. Home / Today state
@@ -29,38 +37,26 @@
 - 이전/다음 카드에 day 번호 + 제목 + 짧은 설명 제공
 - 하단에 다른 day 탐색 카드 제공
 
-### D. Interaction state
-- day별 interaction type에 따라 동작
-- 현재 지원 타입
-  - `runaway-no`
-  - `shrinking-no`
+### D. Success state
+- `좋아` 클릭 시 감사/수락 이후 톤의 성공 메시지 렌더링
 
-### E. Success state
-- `좋아` 클릭 시 성공 메시지 렌더링
+### E. Error state
+- 잘못된 slug 접근 시 not found 메시지와 메인 복귀 링크 표시
+- 검증 실패 시 data error 상태 표시
 
 ## Components
 - Today hero
 - Proposal stage
 - CTA buttons
-- Hint / status text
 - Archive grid
 - Detail header
 - Previous / next day navigation with preview copy
 - Related days grid
+- Confirm overlay (Day 007)
 - About section
-
-## Empty / loading / error states
-### Empty state
-- day 데이터가 없으면 `곧 다음 청혼 페이지가 올라와요` 메시지 표시
-
-### Loading state
-- 정적 렌더링이라 별도 loading state 없음
-
-### Error state
-- 잘못된 slug 접근 시 not found 메시지와 메인 복귀 링크 표시
-- JS 비활성 시 인터랙션은 제한되지만 정적 구조는 유지
 
 ## Accessibility notes
 - 키보드 포커스 표시 유지
 - 링크 카드와 네비게이션 링크의 포커스 가능 상태 유지
 - 이모지는 장식 역할만 하도록 처리
+- 과한 카피보다 인터랙션 중심 경험 유지

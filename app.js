@@ -1,4 +1,12 @@
-const allowedInteractionTypes = new Set(['runaway-no', 'shrinking-no']);
+const allowedInteractionTypes = new Set([
+  'runaway-no',
+  'shrinking-no',
+  'evasive-no',
+  'swapping-labels',
+  'growing-yes',
+  'leaning-choice',
+  'confirm-stack'
+]);
 
 function getDays() {
   return window.MARRYME_DAYS || [];
@@ -45,8 +53,7 @@ function validateDays(days) {
 }
 
 function findDayBySlug(slug) {
-  const days = getDays();
-  return days.find((day) => day.slug === slug);
+  return getDays().find((day) => day.slug === slug);
 }
 
 function createProposalMarkup(day) {
@@ -71,20 +78,38 @@ function createProposalMarkup(day) {
   `;
 }
 
-function setupDayInteraction(day, root) {
-  const noButton = root.querySelector('#noButton');
-  const yesButton = root.querySelector('#yesButton');
-  const proposalStage = root.querySelector('#proposalStage');
+function renderSuccessState(proposalStage, day) {
+  const successHint = day.successHint ? `<p class="hint">${day.successHint}</p>` : '';
+  proposalStage.innerHTML = `
+    <div class="ring" aria-hidden="true">🎉</div>
+    <h2>${day.successTitle}</h2>
+    <p>${day.successBody}</p>
+    ${successHint}
+  `;
+}
 
-  let shrinkStep = 0;
+function getHandlerContext(root) {
+  return {
+    root,
+    proposalStage: root.querySelector('#proposalStage'),
+    actionsArea: root.querySelector('#actionsArea'),
+    yesButton: root.querySelector('#yesButton'),
+    noButton: root.querySelector('#noButton')
+  };
+}
 
-  function moveRunawayButton(event) {
+function attachSharedSuccessHandler(day, ctx) {
+  ctx.yesButton.addEventListener('click', () => renderSuccessState(ctx.proposalStage, day));
+}
+
+function handleRunawayNo(day, ctx) {
+  function move(event) {
     if (event) event.preventDefault();
 
-    proposalStage.classList.add('runaway-active');
+    ctx.proposalStage.classList.add('runaway-active');
 
-    const stageRect = proposalStage.getBoundingClientRect();
-    const buttonRect = noButton.getBoundingClientRect();
+    const stageRect = ctx.proposalStage.getBoundingClientRect();
+    const buttonRect = ctx.noButton.getBoundingClientRect();
     const minX = 16;
     const minY = 140;
     const maxX = Math.max(minX, stageRect.width - buttonRect.width - 16);
@@ -92,46 +117,147 @@ function setupDayInteraction(day, root) {
     const nextX = minX + Math.random() * Math.max(0, maxX - minX);
     const nextY = minY + Math.random() * Math.max(0, maxY - minY);
 
-    noButton.style.left = `${nextX}px`;
-    noButton.style.top = `${nextY}px`;
+    ctx.noButton.style.left = `${nextX}px`;
+    ctx.noButton.style.top = `${nextY}px`;
   }
 
-  function shrinkNoButton(event) {
-    if (event && event.type === 'click') event.preventDefault();
+  ['mouseenter', 'touchstart', 'focus', 'click'].forEach((eventName) => {
+    ctx.noButton.addEventListener(eventName, move, { passive: eventName !== 'click' });
+  });
+}
 
+function handleShrinkingNo(day, ctx) {
+  let shrinkStep = 0;
+
+  function shrink(event) {
+    if (event && event.type === 'click') event.preventDefault();
     shrinkStep += 1;
     const scale = Math.max(0.12, 1 - shrinkStep * 0.12);
-    noButton.style.transform = `scale(${scale})`;
+    ctx.noButton.style.transform = `scale(${scale})`;
   }
 
-  function activateNoInteraction(event) {
-    if (day.interaction.type === 'runaway-no') {
-      moveRunawayButton(event);
-      return;
-    }
+  ['mouseenter', 'touchstart', 'focus', 'click'].forEach((eventName) => {
+    ctx.noButton.addEventListener(eventName, shrink, { passive: eventName !== 'click' });
+  });
+}
 
-    if (day.interaction.type === 'shrinking-no') {
-      shrinkNoButton(event);
-    }
+function handleEvasiveNo(day, ctx) {
+  let direction = 1;
+  function evade(event) {
+    if (event) event.preventDefault();
+    const offset = direction * 72;
+    direction *= -1;
+    ctx.noButton.style.transform = `translateX(${offset}px)`;
   }
 
-  ['mouseenter', 'touchstart', 'focus'].forEach((eventName) => {
-    noButton.addEventListener(eventName, activateNoInteraction, { passive: true });
+  ['mouseenter', 'touchstart', 'focus', 'click'].forEach((eventName) => {
+    ctx.noButton.addEventListener(eventName, evade, { passive: eventName !== 'click' });
   });
+}
 
-  noButton.addEventListener('click', (event) => {
-    activateNoInteraction(event);
+function handleSwappingLabels(day, ctx) {
+  const labels = day.interaction.options || [day.noLabel];
+  let index = 0;
+
+  function swap(event) {
+    if (event && event.type === 'click') event.preventDefault();
+    index = Math.min(index + 1, labels.length - 1);
+    ctx.noButton.textContent = labels[index];
+  }
+
+  ['mouseenter', 'touchstart', 'focus', 'click'].forEach((eventName) => {
+    ctx.noButton.addEventListener(eventName, swap, { passive: eventName !== 'click' });
   });
+}
 
-  yesButton.addEventListener('click', () => {
-    const successHint = day.successHint ? `<p class="hint">${day.successHint}</p>` : '';
-    proposalStage.innerHTML = `
-      <div class="ring" aria-hidden="true">🎉</div>
-      <h2>${day.successTitle}</h2>
-      <p>${day.successBody}</p>
-      ${successHint}
+function handleGrowingYes(day, ctx) {
+  let growStep = 0;
+
+  function grow(event) {
+    if (event && event.type === 'click') event.preventDefault();
+    growStep = Math.min(growStep + 1, 5);
+    const scale = 1 + growStep * 0.12;
+    ctx.yesButton.style.transform = `scale(${scale})`;
+    ctx.yesButton.style.boxShadow = '0 20px 36px rgba(255, 77, 141, 0.32)';
+    ctx.noButton.style.opacity = `${Math.max(0.35, 1 - growStep * 0.12)}`;
+  }
+
+  ['mouseenter', 'touchstart', 'focus', 'click'].forEach((eventName) => {
+    ctx.noButton.addEventListener(eventName, grow, { passive: eventName !== 'click' });
+  });
+}
+
+function handleLeaningChoice(day, ctx) {
+  ctx.proposalStage.classList.add('leaning-active');
+
+  function tilt(event) {
+    if (event && event.type === 'click') event.preventDefault();
+    ctx.yesButton.style.transform = 'scale(1.08)';
+    ctx.noButton.style.transform = 'scale(0.92)';
+    ctx.noButton.style.opacity = '0.78';
+  }
+
+  ['mouseenter', 'touchstart', 'focus', 'click'].forEach((eventName) => {
+    ctx.noButton.addEventListener(eventName, tilt, { passive: eventName !== 'click' });
+  });
+}
+
+function handleConfirmStack(day, ctx) {
+  function openConfirm(event) {
+    if (event) event.preventDefault();
+
+    if (ctx.proposalStage.querySelector('.confirm-overlay')) return;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'confirm-overlay';
+    const firstOption = day.interaction.options?.[0] || '다시 생각해볼게';
+    const secondOption = day.interaction.options?.[1] || '그래도 좋아';
+    overlay.innerHTML = `
+      <div class="confirm-card">
+        <p class="confirm-copy">한 번만 더 생각해줄래?</p>
+        <div class="confirm-actions">
+          <button type="button" class="confirm-secondary">${firstOption}</button>
+          <button type="button" class="confirm-primary">${secondOption}</button>
+        </div>
+      </div>
     `;
+
+    const secondary = overlay.querySelector('.confirm-secondary');
+    const primary = overlay.querySelector('.confirm-primary');
+
+    secondary.addEventListener('click', () => {
+      secondary.textContent = '그래도 좋아 💖';
+      primary.textContent = '좋아 💖';
+    });
+
+    primary.addEventListener('click', () => {
+      renderSuccessState(ctx.proposalStage, day);
+    });
+
+    ctx.proposalStage.appendChild(overlay);
+  }
+
+  ['mouseenter', 'touchstart', 'focus', 'click'].forEach((eventName) => {
+    ctx.noButton.addEventListener(eventName, openConfirm, { passive: eventName !== 'click' });
   });
+}
+
+const interactionHandlers = {
+  'runaway-no': handleRunawayNo,
+  'shrinking-no': handleShrinkingNo,
+  'evasive-no': handleEvasiveNo,
+  'swapping-labels': handleSwappingLabels,
+  'growing-yes': handleGrowingYes,
+  'leaning-choice': handleLeaningChoice,
+  'confirm-stack': handleConfirmStack
+};
+
+function setupDayInteraction(day, root) {
+  const ctx = getHandlerContext(root);
+  attachSharedSuccessHandler(day, ctx);
+
+  const handler = interactionHandlers[day.interaction.type];
+  if (handler) handler(day, ctx);
 }
 
 function renderProposalExperience(root, day) {
