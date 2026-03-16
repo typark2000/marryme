@@ -8,6 +8,7 @@
 - 단일 상세 템플릿 `day/?slug=<slug>` 지원
 - 상세 페이지 이전/다음 네비게이션 + 링크 복사 + related day 정렬 지원
 - interaction type 목록을 `interaction-types.js`로 분리해 런타임/검증기 동기화
+- interaction handler 구현을 `interaction-handlers.js`로 분리해 `app.js`를 더 얇게 유지
 - OG/Twitter 메타와 기본 preview asset(`og-image.svg`) 연결 완료
 - GitHub Pages 자동 배포 연결 완료
 

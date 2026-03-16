@@ -3,11 +3,11 @@
 ## Purpose
 Push 전 QA 게이트 기록용 문서.
 
-## QA Run — 2026-03-16 / Post-launch polish round 2
+## QA Run — 2026-03-16 / Handler split refactor
 ### Scope
-- what changed: Added a reusable OG preview asset, expanded OG/Twitter metadata, added archive tag filters, and improved related-day ranking on detail pages.
-- build/validation target: day data validation, runtime syntax safety, archive filtering behavior, detail share/meta continuity
-- surfaces checked: OG asset path, homepage search+tag filters, detail related-day ordering, share button continuity, latest-day render continuity
+- what changed: Split interaction handler logic out of `app.js` into `interaction-handlers.js` while keeping runtime behavior and existing archive/detail surfaces intact.
+- build/validation target: day data validation, runtime syntax safety, shared script loading order, interaction continuity for the existing 100-day archive
+- surfaces checked: handler registry wiring, home/detail script includes, validation continuity, proposal render flow assumptions
 
 ### Checks
 - [x] acceptance criteria reviewed
@@ -21,8 +21,9 @@ Push 전 QA 게이트 기록용 문서.
 ### Commands run
 ```bash
 npm run validate:days
-node --check app.js
 node --check interaction-types.js
+node --check interaction-handlers.js
+node --check app.js
 node --check data.js
 node --check script.js
 node --check day.js
@@ -31,10 +32,10 @@ node --check validate-days.js
 
 ### Result
 - status: PASS
-- summary: Sharing previews are now more complete, archive browsing gained tag-level filtering, and detail pages suggest more relevant related days without breaking the existing Day 001~100 runtime.
+- summary: `app.js` is now thinner, interaction behavior lives in a dedicated module, and the Day 001~100 runtime remains in a deployable state.
 
 ### Findings
-- issue: Preview metadata now points to a static shared asset; truly per-day social cards would require a separate image generation layer later.
+- issue: Handler logic is now separated structurally, but a future pass could still split simple/shared handlers from bespoke ones for even cleaner maintenance.
 - severity: low
 - status: accepted / tracked
 
