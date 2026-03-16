@@ -4,10 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Marry Me — Daily Proposal Designs</title>
-    <meta
-      name="description"
-      content="매일 하나씩 업로드되는 장난기 가득한 청혼 웹페이지 디자인 갤러리"
-    />
+    <meta name="description" content="매일 하나씩 업로드되는 장난기 가득한 청혼 웹페이지 디자인 갤러리" />
+    <meta property="og:title" content="Marry Me — Daily Proposal Designs" />
+    <meta property="og:description" content="매일 하나씩 업로드되는 장난기 가득한 청혼 웹페이지 디자인 갤러리" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://typark2000.github.io/marryme/" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -24,6 +25,14 @@
           </div>
           <p class="section-copy">매일 하나씩 쌓이는 청혼 실험들을 둘러보고, 각 day 상세 페이지로 들어갈 수 있어.</p>
         </div>
+        <div class="archive-toolbar">
+          <input id="archiveSearch" class="archive-search" type="search" placeholder="day, slug, interaction, tag 검색" aria-label="archive search" />
+          <div class="archive-toolbar-meta">
+            <span id="archiveCount" class="archive-count">0 / 0</span>
+            <a id="archiveLatestLink" class="text-link" href="day/?slug=day-100">최신 day 보기 →</a>
+          </div>
+        </div>
+        <p id="archiveEmpty" class="empty-copy" hidden>검색 결과가 없어.</p>
         <div class="archive-grid" id="archiveGrid"></div>
       </section>
 
@@ -39,6 +48,7 @@
       </div>
     </noscript>
 
+    <script src="interaction-types.js"></script>
     <script src="data.js"></script>
     <script src="app.js"></script>
     <script src="script.js"></script>

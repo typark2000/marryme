@@ -3,11 +3,11 @@
 ## Purpose
 Push 전 QA 게이트 기록용 문서.
 
-## QA Run — 2026-03-16 / Day 083~100 implementation
+## QA Run — 2026-03-16 / Post-launch refactor + product polish
 ### Scope
-- what changed: Implemented final wave days (083~100), expanded data set to Day 100, fixed the validation gate, and prepared final collection deployment.
-- build/validation target: day data validation, runtime syntax safety, archive/day detail rendering assumptions
-- surfaces checked: data structure, latest-day rendering, archive continuity, day detail navigation, final collection completeness
+- what changed: Extracted shared interaction type registry, aligned runtime/validation lookup, added searchable archive UX, added share-link controls, and added baseline OG metadata updates for main/detail pages.
+- build/validation target: day data validation, runtime syntax safety, archive rendering, day detail navigation/share behavior assumptions
+- surfaces checked: shared type registry wiring, homepage archive search, day detail share button wiring, document metadata updates, latest-day rendering continuity
 
 ### Checks
 - [x] acceptance criteria reviewed
@@ -22,17 +22,19 @@ Push 전 QA 게이트 기록용 문서.
 ```bash
 npm run validate:days
 node --check app.js
+node --check interaction-types.js
 node --check data.js
 node --check script.js
 node --check day.js
+node --check validate-days.js
 ```
 
 ### Result
 - status: PASS
-- summary: Validation passed for 100 day entries and runtime syntax checks passed. The collection now spans Day 001~100 in a deployable state.
+- summary: Shared interaction types now come from one source, archive browsing is more usable, and detail pages are easier to share without breaking the Day 001~100 runtime.
 
 ### Findings
-- issue: Final-wave interactions are currently MVP-safe simplified patterns through the shared handler layer and can be visually specialized later.
+- issue: OG metadata is now structurally present and updated in-page, but richer preview assets would still need dedicated images later.
 - severity: low
 - status: accepted / tracked
 

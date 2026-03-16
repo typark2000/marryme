@@ -2,6 +2,10 @@ const days = window.MarryMeApp.getDays();
 const validation = window.MarryMeApp.validateDays(days);
 const todayContent = document.getElementById('todayContent');
 const archiveGrid = document.getElementById('archiveGrid');
+const archiveSearch = document.getElementById('archiveSearch');
+const archiveCount = document.getElementById('archiveCount');
+const archiveEmpty = document.getElementById('archiveEmpty');
+const archiveLatestLink = document.getElementById('archiveLatestLink');
 
 function createArchiveCard(day, index) {
   const status = index === 0 ? 'today' : 'archived';
@@ -31,6 +35,42 @@ function renderValidationError(errors) {
   archiveGrid.innerHTML = '<p class="empty-copy">데이터 오류 때문에 아카이브를 렌더링하지 않았어.</p>';
 }
 
+function filterDays(query) {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return days;
+
+  return days.filter((day) => {
+    const haystack = [
+      day.dayNumber,
+      day.slug,
+      day.proposalTitle,
+      day.subtitle,
+      day.interaction.type,
+      ...(day.tags || [])
+    ].join(' ').toLowerCase();
+    return haystack.includes(normalized);
+  });
+}
+
+function renderArchive(list) {
+  archiveGrid.innerHTML = list.map(createArchiveCard).join('');
+  archiveCount.textContent = `${list.length} / ${days.length}`;
+  archiveEmpty.hidden = list.length > 0;
+}
+
+function updateMeta(today) {
+  document.title = `Marry Me — Day ${today.dayNumber}`;
+  const description = `Day ${today.dayNumber}. ${today.subtitle}`;
+  const descriptionMeta = document.querySelector('meta[name="description"]');
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  const ogDescription = document.querySelector('meta[property="og:description"]');
+  const ogUrl = document.querySelector('meta[property="og:url"]');
+  if (descriptionMeta) descriptionMeta.setAttribute('content', description);
+  if (ogTitle) ogTitle.setAttribute('content', `Marry Me — Day ${today.dayNumber}`);
+  if (ogDescription) ogDescription.setAttribute('content', description);
+  if (ogUrl) ogUrl.setAttribute('content', `${window.location.origin}${window.location.pathname}`);
+}
+
 function render() {
   if (!validation.valid) {
     renderValidationError(validation.errors);
@@ -39,7 +79,13 @@ function render() {
 
   const today = days[0];
   window.MarryMeApp.renderProposalExperience(todayContent, today);
-  archiveGrid.innerHTML = days.map(createArchiveCard).join('');
+  renderArchive(days);
+  updateMeta(today);
+  archiveLatestLink.href = `day/?slug=${today.slug}`;
+
+  archiveSearch.addEventListener('input', (event) => {
+    renderArchive(filterDays(event.target.value));
+  });
 }
 
 render();

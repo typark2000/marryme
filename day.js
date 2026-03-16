@@ -3,6 +3,7 @@ const validation = window.MarryMeApp.validateDays(days);
 const detailRoot = document.getElementById('dayDetailContent');
 const relatedGrid = document.getElementById('relatedDaysGrid');
 const detailHeader = document.getElementById('detailHeader');
+const shareButton = document.getElementById('shareButton');
 const params = new URLSearchParams(window.location.search);
 const slug = params.get('slug');
 const currentDay = validation.valid ? window.MarryMeApp.findDayBySlug(slug) : null;
@@ -48,12 +49,8 @@ function createDayNav(day) {
 
   return `
     <nav class="day-nav" aria-label="day navigation">
-      ${previousDay
-        ? createDayNavCard(previousDay, '이전 day', '←')
-        : createDisabledDayNav('이전 day', '←')}
-      ${nextDay
-        ? createDayNavCard(nextDay, '다음 day', '→')
-        : createDisabledDayNav('다음 day', '→')}
+      ${previousDay ? createDayNavCard(previousDay, '이전 day', '←') : createDisabledDayNav('이전 day', '←')}
+      ${nextDay ? createDayNavCard(nextDay, '다음 day', '→') : createDisabledDayNav('다음 day', '→')}
     </nav>
   `;
 }
@@ -75,9 +72,44 @@ function createDetailHeader(day) {
     <p class="eyebrow">DETAIL</p>
     <h1>Day ${day.dayNumber}</h1>
     <p class="section-copy">${day.subtitle}</p>
-    <p><a class="text-link" href="../">← 메인으로 돌아가기</a></p>
+    <div class="detail-actions"><a class="text-link" href="../">← 메인으로 돌아가기</a><button class="share-link-button" id="shareInlineButton" type="button">링크 복사</button></div>
     ${createDayNav(day)}
   `;
+}
+
+function updateMeta(day) {
+  const pageUrl = `${window.location.origin}${window.location.pathname}?slug=${day.slug}`;
+  const title = `Marry Me — Day ${day.dayNumber}`;
+  const description = `Day ${day.dayNumber}. ${day.subtitle}`;
+  document.title = title;
+  const descriptionMeta = document.querySelector('meta[name="description"]');
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  const ogDescription = document.querySelector('meta[property="og:description"]');
+  const ogUrl = document.querySelector('meta[property="og:url"]');
+  if (descriptionMeta) descriptionMeta.setAttribute('content', description);
+  if (ogTitle) ogTitle.setAttribute('content', title);
+  if (ogDescription) ogDescription.setAttribute('content', description);
+  if (ogUrl) ogUrl.setAttribute('content', pageUrl);
+}
+
+function wireShareButton(day) {
+  const pageUrl = `${window.location.origin}${window.location.pathname}?slug=${day.slug}`;
+  const button = document.getElementById('shareInlineButton') || shareButton;
+  if (!button) return;
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(pageUrl);
+      button.textContent = '복사됨';
+      setTimeout(() => {
+        button.textContent = '링크 복사';
+      }, 1200);
+    } catch {
+      button.textContent = '복사 실패';
+      setTimeout(() => {
+        button.textContent = '링크 복사';
+      }, 1200);
+    }
+  });
 }
 
 if (!validation.valid) {
@@ -90,18 +122,13 @@ if (!validation.valid) {
     <p class="section-copy">slug가 없거나 잘못된 주소일 수 있어.</p>
     <p><a class="text-link" href="../">← 메인으로 돌아가기</a></p>
   `;
-  detailRoot.innerHTML = `
-    <p class="lead">주소가 바뀌었거나 아직 준비 중일 수 있어.</p>
-  `;
-  relatedGrid.innerHTML = days.length
-    ? days.map(createRelatedCard).join('')
-    : '<p class="empty-copy">아직 다른 day가 없어.</p>';
+  detailRoot.innerHTML = '<p class="lead">주소가 바뀌었거나 아직 준비 중일 수 있어.</p>';
+  relatedGrid.innerHTML = days.length ? days.map(createRelatedCard).join('') : '<p class="empty-copy">아직 다른 day가 없어.</p>';
 } else {
-  document.title = `Marry Me — Day ${currentDay.dayNumber}`;
   detailHeader.innerHTML = createDetailHeader(currentDay);
   window.MarryMeApp.renderProposalExperience(detailRoot, currentDay);
-  const relatedDays = days.filter((day) => day.slug !== currentDay.slug);
-  relatedGrid.innerHTML = relatedDays.length
-    ? relatedDays.map(createRelatedCard).join('')
-    : '<p class="empty-copy">다른 day가 아직 없어.</p>';
+  const relatedDays = days.filter((day) => day.slug !== currentDay.slug).slice(0, 12);
+  relatedGrid.innerHTML = relatedDays.length ? relatedDays.map(createRelatedCard).join('') : '<p class="empty-copy">다른 day가 아직 없어.</p>';
+  updateMeta(currentDay);
+  wireShareButton(currentDay);
 }
