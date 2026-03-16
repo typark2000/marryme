@@ -1,0 +1,27 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF1F2"/>
+      <stop offset="1" stop-color="#FFE4E6"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="260" y1="180" x2="940" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF4D8D"/>
+      <stop offset="1" stop-color="#FF7AA8"/>
+    </linearGradient>
+    <filter id="shadow" x="180" y="100" width="840" height="430" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="20" stdDeviation="30" flood-color="#FF4D8D" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <g filter="url(#shadow)">
+    <rect x="220" y="120" width="760" height="390" rx="36" fill="white" fill-opacity="0.86"/>
+  </g>
+  <circle cx="600" cy="205" r="48" fill="url(#accent)"/>
+  <text x="600" y="220" text-anchor="middle" font-size="42" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" fill="white">💍</text>
+  <text x="600" y="300" text-anchor="middle" font-size="64" font-weight="800" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" fill="#3F1D2E">Marry Me</text>
+  <text x="600" y="356" text-anchor="middle" font-size="30" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" fill="#7A5566">100 days of playful proposal pages</text>
+  <rect x="407" y="401" width="186" height="58" rx="29" fill="url(#accent)"/>
+  <rect x="607" y="401" width="186" height="58" rx="29" fill="white"/>
+  <text x="500" y="438" text-anchor="middle" font-size="26" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" fill="white">좋아 💖</text>
+  <text x="700" y="438" text-anchor="middle" font-size="26" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" fill="#3F1D2E">잠깐만 🙈</text>
+</svg>

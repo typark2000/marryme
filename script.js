@@ -6,6 +6,9 @@ const archiveSearch = document.getElementById('archiveSearch');
 const archiveCount = document.getElementById('archiveCount');
 const archiveEmpty = document.getElementById('archiveEmpty');
 const archiveLatestLink = document.getElementById('archiveLatestLink');
+const archiveTags = document.getElementById('archiveTags');
+
+let activeTag = '';
 
 function createArchiveCard(day, index) {
   const status = index === 0 ? 'today' : 'archived';
@@ -35,19 +38,24 @@ function renderValidationError(errors) {
   archiveGrid.innerHTML = '<p class="empty-copy">데이터 오류 때문에 아카이브를 렌더링하지 않았어.</p>';
 }
 
-function filterDays(query) {
-  const normalized = query.trim().toLowerCase();
-  if (!normalized) return days;
+function getPopularTags() {
+  const counts = new Map();
+  days.forEach((day) => {
+    (day.tags || []).forEach((tag) => counts.set(tag, (counts.get(tag) || 0) + 1));
+  });
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, 12)
+    .map(([tag]) => tag);
+}
 
+function filterDays(query, tag) {
+  const normalized = query.trim().toLowerCase();
   return days.filter((day) => {
-    const haystack = [
-      day.dayNumber,
-      day.slug,
-      day.proposalTitle,
-      day.subtitle,
-      day.interaction.type,
-      ...(day.tags || [])
-    ].join(' ').toLowerCase();
+    const matchesTag = !tag || (day.tags || []).includes(tag);
+    if (!matchesTag) return false;
+    if (!normalized) return true;
+    const haystack = [day.dayNumber, day.slug, day.proposalTitle, day.subtitle, day.interaction.type, ...(day.tags || [])].join(' ').toLowerCase();
     return haystack.includes(normalized);
   });
 }
@@ -58,17 +66,43 @@ function renderArchive(list) {
   archiveEmpty.hidden = list.length > 0;
 }
 
+function renderTagFilters() {
+  const tags = getPopularTags();
+  archiveTags.innerHTML = [
+    `<button type="button" class="tag-filter-button ${activeTag ? '' : 'is-active'}" data-tag="">전체</button>`,
+    ...tags.map((tag) => `<button type="button" class="tag-filter-button ${activeTag === tag ? 'is-active' : ''}" data-tag="${tag}">#${tag}</button>`)
+  ].join('');
+
+  archiveTags.querySelectorAll('[data-tag]').forEach((button) => {
+    button.addEventListener('click', () => {
+      activeTag = button.dataset.tag || '';
+      renderTagFilters();
+      renderArchive(filterDays(archiveSearch.value, activeTag));
+    });
+  });
+}
+
 function updateMeta(today) {
   document.title = `Marry Me — Day ${today.dayNumber}`;
   const description = `Day ${today.dayNumber}. ${today.subtitle}`;
+  const pageUrl = `${window.location.origin}${window.location.pathname}`;
+  const imageUrl = `${window.location.origin}${window.location.pathname.replace(/\/$/, '')}/og-image.svg`;
   const descriptionMeta = document.querySelector('meta[name="description"]');
   const ogTitle = document.querySelector('meta[property="og:title"]');
   const ogDescription = document.querySelector('meta[property="og:description"]');
   const ogUrl = document.querySelector('meta[property="og:url"]');
+  const ogImage = document.querySelector('meta[property="og:image"]');
+  const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+  const twitterDescription = document.querySelector('meta[name="twitter:description"]');
+  const twitterImage = document.querySelector('meta[name="twitter:image"]');
   if (descriptionMeta) descriptionMeta.setAttribute('content', description);
   if (ogTitle) ogTitle.setAttribute('content', `Marry Me — Day ${today.dayNumber}`);
   if (ogDescription) ogDescription.setAttribute('content', description);
-  if (ogUrl) ogUrl.setAttribute('content', `${window.location.origin}${window.location.pathname}`);
+  if (ogUrl) ogUrl.setAttribute('content', pageUrl);
+  if (ogImage) ogImage.setAttribute('content', imageUrl);
+  if (twitterTitle) twitterTitle.setAttribute('content', `Marry Me — Day ${today.dayNumber}`);
+  if (twitterDescription) twitterDescription.setAttribute('content', description);
+  if (twitterImage) twitterImage.setAttribute('content', imageUrl);
 }
 
 function render() {
@@ -80,11 +114,12 @@ function render() {
   const today = days[0];
   window.MarryMeApp.renderProposalExperience(todayContent, today);
   renderArchive(days);
+  renderTagFilters();
   updateMeta(today);
   archiveLatestLink.href = `day/?slug=${today.slug}`;
 
   archiveSearch.addEventListener('input', (event) => {
-    renderArchive(filterDays(event.target.value));
+    renderArchive(filterDays(event.target.value, activeTag));
   });
 }
 

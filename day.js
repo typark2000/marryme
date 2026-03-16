@@ -81,15 +81,24 @@ function updateMeta(day) {
   const pageUrl = `${window.location.origin}${window.location.pathname}?slug=${day.slug}`;
   const title = `Marry Me — Day ${day.dayNumber}`;
   const description = `Day ${day.dayNumber}. ${day.subtitle}`;
+  const imageUrl = `${window.location.origin}/marryme/og-image.svg`;
   document.title = title;
   const descriptionMeta = document.querySelector('meta[name="description"]');
   const ogTitle = document.querySelector('meta[property="og:title"]');
   const ogDescription = document.querySelector('meta[property="og:description"]');
   const ogUrl = document.querySelector('meta[property="og:url"]');
+  const ogImage = document.querySelector('meta[property="og:image"]');
+  const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+  const twitterDescription = document.querySelector('meta[name="twitter:description"]');
+  const twitterImage = document.querySelector('meta[name="twitter:image"]');
   if (descriptionMeta) descriptionMeta.setAttribute('content', description);
   if (ogTitle) ogTitle.setAttribute('content', title);
   if (ogDescription) ogDescription.setAttribute('content', description);
   if (ogUrl) ogUrl.setAttribute('content', pageUrl);
+  if (ogImage) ogImage.setAttribute('content', imageUrl);
+  if (twitterTitle) twitterTitle.setAttribute('content', title);
+  if (twitterDescription) twitterDescription.setAttribute('content', description);
+  if (twitterImage) twitterImage.setAttribute('content', imageUrl);
 }
 
 function wireShareButton(day) {
@@ -112,6 +121,18 @@ function wireShareButton(day) {
   });
 }
 
+function getRelatedDays(day) {
+  return days
+    .filter((item) => item.slug !== day.slug)
+    .sort((a, b) => {
+      const aShared = (a.tags || []).filter((tag) => (day.tags || []).includes(tag)).length;
+      const bShared = (b.tags || []).filter((tag) => (day.tags || []).includes(tag)).length;
+      if (aShared !== bShared) return bShared - aShared;
+      return Number(b.dayNumber) - Number(a.dayNumber);
+    })
+    .slice(0, 12);
+}
+
 if (!validation.valid) {
   renderValidationError(validation.errors);
 } else if (!currentDay) {
@@ -123,11 +144,11 @@ if (!validation.valid) {
     <p><a class="text-link" href="../">← 메인으로 돌아가기</a></p>
   `;
   detailRoot.innerHTML = '<p class="lead">주소가 바뀌었거나 아직 준비 중일 수 있어.</p>';
-  relatedGrid.innerHTML = days.length ? days.map(createRelatedCard).join('') : '<p class="empty-copy">아직 다른 day가 없어.</p>';
+  relatedGrid.innerHTML = days.length ? days.slice(0, 12).map(createRelatedCard).join('') : '<p class="empty-copy">아직 다른 day가 없어.</p>';
 } else {
   detailHeader.innerHTML = createDetailHeader(currentDay);
   window.MarryMeApp.renderProposalExperience(detailRoot, currentDay);
-  const relatedDays = days.filter((day) => day.slug !== currentDay.slug).slice(0, 12);
+  const relatedDays = getRelatedDays(currentDay);
   relatedGrid.innerHTML = relatedDays.length ? relatedDays.map(createRelatedCard).join('') : '<p class="empty-copy">다른 day가 아직 없어.</p>';
   updateMeta(currentDay);
   wireShareButton(currentDay);

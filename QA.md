@@ -3,11 +3,11 @@
 ## Purpose
 Push 전 QA 게이트 기록용 문서.
 
-## QA Run — 2026-03-16 / Post-launch refactor + product polish
+## QA Run — 2026-03-16 / Post-launch polish round 2
 ### Scope
-- what changed: Extracted shared interaction type registry, aligned runtime/validation lookup, added searchable archive UX, added share-link controls, and added baseline OG metadata updates for main/detail pages.
-- build/validation target: day data validation, runtime syntax safety, archive rendering, day detail navigation/share behavior assumptions
-- surfaces checked: shared type registry wiring, homepage archive search, day detail share button wiring, document metadata updates, latest-day rendering continuity
+- what changed: Added a reusable OG preview asset, expanded OG/Twitter metadata, added archive tag filters, and improved related-day ranking on detail pages.
+- build/validation target: day data validation, runtime syntax safety, archive filtering behavior, detail share/meta continuity
+- surfaces checked: OG asset path, homepage search+tag filters, detail related-day ordering, share button continuity, latest-day render continuity
 
 ### Checks
 - [x] acceptance criteria reviewed
@@ -31,10 +31,10 @@ node --check validate-days.js
 
 ### Result
 - status: PASS
-- summary: Shared interaction types now come from one source, archive browsing is more usable, and detail pages are easier to share without breaking the Day 001~100 runtime.
+- summary: Sharing previews are now more complete, archive browsing gained tag-level filtering, and detail pages suggest more relevant related days without breaking the existing Day 001~100 runtime.
 
 ### Findings
-- issue: OG metadata is now structurally present and updated in-page, but richer preview assets would still need dedicated images later.
+- issue: Preview metadata now points to a static shared asset; truly per-day social cards would require a separate image generation layer later.
 - severity: low
 - status: accepted / tracked
 
